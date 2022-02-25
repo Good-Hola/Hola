@@ -113,21 +113,12 @@ void APlayerCharacter::MoveRight(float Value)
 
 void APlayerCharacter::StartCrouch()
 {
-	//GetCapsuleComponent()->SetCapsuleHalfHeight(48.0f);
-	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
-
-	//APlayerCharacter::Crouch();
 	GetCharacterMovement()->bWantsToCrouch = true;
-
 	isCrouching = true;
 }
 
 void APlayerCharacter::StopCrouch()
 {
-	//GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
-	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	//APlayerCharacter::UnCrouch();
 	GetCharacterMovement()->bWantsToCrouch = false;
-
 	isCrouching = false;
 }
