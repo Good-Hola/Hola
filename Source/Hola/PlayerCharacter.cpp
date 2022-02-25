@@ -30,6 +30,9 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
+	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
+	GetCharacterMovement()->CrouchedHalfHeight = 40.0f;
+
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -53,6 +56,8 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlayerCharacter::StartCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &APlayerCharacter::StopCrouch);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -104,4 +109,25 @@ void APlayerCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void APlayerCharacter::StartCrouch()
+{
+	//GetCapsuleComponent()->SetCapsuleHalfHeight(48.0f);
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+
+	//APlayerCharacter::Crouch();
+	GetCharacterMovement()->bWantsToCrouch = true;
+
+	isCrouching = true;
+}
+
+void APlayerCharacter::StopCrouch()
+{
+	//GetCapsuleComponent()->SetCapsuleHalfHeight(96.0f);
+	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	//APlayerCharacter::UnCrouch();
+	GetCharacterMovement()->bWantsToCrouch = false;
+
+	isCrouching = false;
 }
