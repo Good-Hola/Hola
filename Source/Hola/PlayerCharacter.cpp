@@ -50,8 +50,8 @@ APlayerCharacter::APlayerCharacter()
 	TriggerCapsule->SetCollisionProfileName(TEXT("Trigger"));
 	TriggerCapsule->SetupAttachment(RootComponent);
 
-	//TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
-	//TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
+	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
+	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 
 }
 
@@ -78,15 +78,17 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
-	//TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	DetectObject();
+}
+
+void APlayerCharacter::DetectObject()
+{
 	TArray<AActor*>OverlappingActors;
 
 	TriggerCapsule->GetOverlappingActors(OverlappingActors);
@@ -101,13 +103,13 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 		return;
 	}
 
-	AActor* ClosestActor=OverlappingActors[0];
+	AActor* ClosestActor = OverlappingActors[0];
 
 	for (auto CurrentActor : OverlappingActors)
 	{
 		if (GetDistanceTo(CurrentActor) < GetDistanceTo(ClosestActor))
 		{
-			ClosestActor=CurrentActor;
+			ClosestActor = CurrentActor;
 		}
 	}
 
@@ -116,7 +118,7 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 		Interface->HideInteractionWidget();
 	}
 
-	Interface=Cast<IInteractionInterface>(ClosestActor);
+	Interface = Cast<IInteractionInterface>(ClosestActor);
 
 	if (Interface)
 	{
@@ -133,29 +135,33 @@ void APlayerCharacter::OnInteract()
 	}
 }
 
-//void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-//{
-//	Interface = Cast<IInteractionInterface>(OtherActor);
-//
-//	if (Interface)
-//	{
-//		Interface->ShowInteractionWidget();
-//	}
-//
-//	//if (Interface)
-//	//{
-//	//	Interface->InteractWithme();
-//	//}
-//}
-//
-//void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-//{
-//	if (Interface)
-//	{
-//		Interface->HideInteractionWidget();
-//		Interface = nullptr;
-//	}
-//}
+void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	/*
+	Interface = Cast<IInteractionInterface>(OtherActor);
+
+	if (Interface)
+	{
+		Interface->ShowInteractionWidget();
+	}
+
+	//if (Interface)
+	//{
+	//	Interface->InteractWithme();
+	//}
+	*/
+}
+
+void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+/*
+	if (Interface)
+	{
+		Interface->HideInteractionWidget();
+		Interface = nullptr;
+	}
+*/
+}
 
 void APlayerCharacter::TurnAtRate(float Rate)
 {
