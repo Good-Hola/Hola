@@ -50,8 +50,8 @@ APlayerCharacter::APlayerCharacter()
 	TriggerCapsule->SetCollisionProfileName(TEXT("Trigger"));
 	TriggerCapsule->SetupAttachment(RootComponent);
 
-	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
-	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
+	//TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
+	//TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 
 }
 
@@ -61,6 +61,8 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::OnInteract);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -73,21 +75,87 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 }
 
-void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void APlayerCharacter::BeginPlay()
 {
-	if (OtherActor && (OtherActor != this) && OtherComp)
+	Super::BeginPlay();
+
+	//TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
+	//TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
+}
+
+void APlayerCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	TArray<AActor*>OverlappingActors;
+
+	TriggerCapsule->GetOverlappingActors(OverlappingActors);
+
+	if (OverlappingActors.Num() == 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("test begin overlap"));
+		if (Interface)
+		{
+			Interface->HideInteractionWidget();
+			Interface = nullptr;
+		}
+		return;
+	}
+
+	AActor* ClosestActor=OverlappingActors[0];
+
+	for (auto CurrentActor : OverlappingActors)
+	{
+		if (GetDistanceTo(CurrentActor) < GetDistanceTo(ClosestActor))
+		{
+			ClosestActor=CurrentActor;
+		}
+	}
+
+	if (Interface)
+	{
+		Interface->HideInteractionWidget();
+	}
+
+	Interface=Cast<IInteractionInterface>(ClosestActor);
+
+	if (Interface)
+	{
+		Interface->ShowInteractionWidget();
+	}
+
+}
+
+void APlayerCharacter::OnInteract()
+{
+	if (Interface)
+	{
+		Interface->InteractWithme();
 	}
 }
 
-void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (OtherActor && (OtherActor != this))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("overlap end"));
-	}
-}
+//void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+//{
+//	Interface = Cast<IInteractionInterface>(OtherActor);
+//
+//	if (Interface)
+//	{
+//		Interface->ShowInteractionWidget();
+//	}
+//
+//	//if (Interface)
+//	//{
+//	//	Interface->InteractWithme();
+//	//}
+//}
+//
+//void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+//{
+//	if (Interface)
+//	{
+//		Interface->HideInteractionWidget();
+//		Interface = nullptr;
+//	}
+//}
 
 void APlayerCharacter::TurnAtRate(float Rate)
 {
@@ -129,3 +197,4 @@ void APlayerCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+

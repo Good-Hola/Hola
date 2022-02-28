@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InteractionInterface.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -34,6 +35,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
+
 protected:
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
@@ -57,19 +59,31 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
+	virtual	void BeginPlay() override;
+
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	virtual void Tick(float DeltaSeconds) override;
 
-	UFUNCTION()
-	void OnTriggerBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, 
-		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	//UFUNCTION()
+	//void OnTriggerBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, 
+	//	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	UFUNCTION()
-	void OnTriggerEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
-		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	//UFUNCTION()
+	//void OnTriggerEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+	//	class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+private:
+
+	IInteractionInterface* Interface = nullptr;
+
+	void OnInteract();
+
+
 
 };
