@@ -35,9 +35,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
 	bool isCrouching;
+
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+		class ATestWeapon* currentWeapon;
 
 protected:
 	/** Called for forwards/backward input */
@@ -84,6 +86,9 @@ public:
 	UFUNCTION()
 	void OnTriggerEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	bool CanSetWeapon();
+	void SetWeapon(class ATestWeapon* NewWeapon);
 
 private:
 
