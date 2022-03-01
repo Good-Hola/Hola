@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "TestWeapon.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -219,4 +220,23 @@ void APlayerCharacter::StopCrouch()
 {
 	GetCharacterMovement()->bWantsToCrouch = false;
 	isCrouching = false;
+}
+
+bool APlayerCharacter::CanSetWeapon()
+{
+	return nullptr == currentWeapon;
+}
+
+void APlayerCharacter::SetWeapon(ATestWeapon* NewWeapon)
+{
+	if (nullptr != NewWeapon && nullptr == currentWeapon)
+		UE_LOG(LogTemp, Log, TEXT("Can't equip weapon"));
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	if (NewWeapon != nullptr)
+	{
+		NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		NewWeapon->SetOwner(this);
+		NewWeapon->AddActorLocalRotation(FQuat(0.f, 0.f, 0.f, 93.f));
+		currentWeapon = NewWeapon;
+	}
 }
