@@ -13,3 +13,5 @@ Saved
 *.xcodeproj
 *.xcworkspace
 Content/OutsideAsset/
+*.7z
+*.zip
