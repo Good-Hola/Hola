@@ -14,21 +14,21 @@ ADoor::ADoor()
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	meshComp->SetupAttachment(RootComponent);
-	meshComp->OnComponentBeginOverlap.AddDynamic(this, &ADoor::OnOverlapBegin);
-
 }
 
 void ADoor::DoorToggle()
 {
-	UGameplayStatics::PlaySoundAtLocation(this, openCloseSound, AActor::GetActorLocation());
+	UGameplayStatics::PlaySoundAtLocation(this, interactionSound, AActor::GetActorLocation());
 
 	if (isOpen)
 	{
 		// Play Open Animation
+		UE_LOG(LogCollision, Log, TEXT("Door Close"));
 	}
 	else
 	{
 		// Play Close Animation
+		UE_LOG(LogCollision, Log, TEXT("Door Open"));
 	}
 
 	isOpen = !isOpen;
@@ -47,12 +47,6 @@ void ADoor::PostInitializeComponents()
 
 }
 
-void ADoor::OnOverlapBegin(UPrimitiveComponent* overrlapedComp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIdx, bool fromSweep, const FHitResult& sweepResult)
-{
-	UE_LOG(LogCollision, Log, TEXT("OnOverlapBegin"));
-
-}
-
 // Called every frame
 void ADoor::Tick(float DeltaTime)
 {
@@ -60,9 +54,17 @@ void ADoor::Tick(float DeltaTime)
 
 }
 
-void ADoor::Interaction(APlayerCharactor* charactor)
+void ADoor::InteractWithme()
 {
 	DoorToggle();
-
 }
+
+void ADoor::ShowInteractionWidget()
+{
+}
+
+void ADoor::HideInteractionWidget()
+{
+}
+
 

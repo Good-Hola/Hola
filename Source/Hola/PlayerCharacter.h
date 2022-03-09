@@ -35,8 +35,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
-	bool isCrouching;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
+	//bool isCrouching;
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 		class ATestWeapon* currentWeapon;
@@ -60,9 +60,9 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
-	void StartCrouch();
+	//void StartCrouch();
 
-	void StopCrouch();
+	//void StopCrouch();
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
