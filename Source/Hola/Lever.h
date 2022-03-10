@@ -3,29 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InteractionInterface.h"
 #include "ParentObject.h"
+#include "InteractionInterface.h"
 #include "GameFramework/Actor.h"
-#include "Door.generated.h"
+#include "Lever.generated.h"
 
 UCLASS()
-class HOLA_API ADoor : public AParentObject, public IInteractionInterface
+class HOLA_API ALever : public AParentObject, public IInteractionInterface
 {
 	GENERATED_BODY()
-
-public:
+	
+public:	
 	// Sets default values for this actor's properties
-	ADoor();
-
-	void DoorToggle();
+	ALever();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	virtual void PostInitializeComponents() override;
-
-public:
+public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -33,14 +29,12 @@ public:
 	virtual void ShowInteractionWidget() override;
 	virtual void HideInteractionWidget() override;
 
-public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
 	//	class USoundBase* openCloseSound;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 	//	class UStaticMeshComponent* meshComp;
 
-private:
-	bool isOpen;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Target)
+		class TScriptInterface<IInteractionInterface> targetObj;
 };
