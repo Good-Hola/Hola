@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	ADoor();
 
-	void DoorToggle();
+	void DoorToggle(bool toggle);
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,5 +42,9 @@ public:
 
 private:
 	bool isOpen;
+
+
+	// IInteractionInterface을(를) 통해 상속됨
+	virtual void RequestInteract(APlayerCharacter* player) override;
 
 };
