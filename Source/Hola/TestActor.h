@@ -44,4 +44,7 @@ private:
 	UWidgetComponent* InteractionWidget;
 
 	bool bIsOn = false;
+
+	// IInteractionInterface을(를) 통해 상속됨
+	virtual void RequestInteract(APlayerCharacter* player) override;
 };

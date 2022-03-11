@@ -41,3 +41,6 @@ void ALever::HideInteractionWidget()
 {
 }
 
+void ALever::RequestInteract(APlayerCharacter* player)
+{
+}

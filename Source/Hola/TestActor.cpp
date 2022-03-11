@@ -63,6 +63,10 @@ void ATestActor::HideInteractionWidget()
 	InteractionWidget->SetVisibility(false);
 }
 
+void ATestActor::RequestInteract(APlayerCharacter* player)
+{
+}
+
 //void ATestActor::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 //{
 //	if (OtherActor && OtherActor->GetClass()->IsChildOf(AActor::StaticClass()))
