@@ -71,7 +71,10 @@ void ADoor::HideInteractionWidget()
 
 void ADoor::RequestInteract(APlayerCharacter* player)
 {
-	//DoorToggle(player->);
+	//bool requestResult = player->
+	//DoorToggle(requestResult);
+	//isActive = requestResult;
+
 }
 
 

@@ -31,4 +31,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Energy)
 		int needEnergy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Interact)
+		bool isActive;
 };
