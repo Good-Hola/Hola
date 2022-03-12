@@ -2,6 +2,7 @@
 
 
 #include "Door.h"
+#include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Animation/AnimInstance.h"
 #include "Engine/Classes/Components/StaticMeshComponent.h"
@@ -16,22 +17,24 @@ ADoor::ADoor()
 	meshComp->SetupAttachment(RootComponent);
 }
 
-void ADoor::DoorToggle()
+void ADoor::DoorToggle(bool toggle)
 {
+	if (toggle == isOpen) return;
+
 	UGameplayStatics::PlaySoundAtLocation(this, interactionSound, AActor::GetActorLocation());
 
-	if (isOpen)
+	if (toggle)
 	{
 		// Play Open Animation
-		UE_LOG(LogCollision, Log, TEXT("Door Close"));
+		UE_LOG(LogCollision, Log, TEXT("Door Open"));
 	}
 	else
 	{
 		// Play Close Animation
-		UE_LOG(LogCollision, Log, TEXT("Door Open"));
+		UE_LOG(LogCollision, Log, TEXT("Door Close"));
 	}
 
-	isOpen = !isOpen;
+	isOpen = toggle;
 }
 
 // Called when the game starts or when spawned
@@ -56,7 +59,6 @@ void ADoor::Tick(float DeltaTime)
 
 void ADoor::InteractWithme()
 {
-	DoorToggle();
 }
 
 void ADoor::ShowInteractionWidget()
@@ -65,6 +67,14 @@ void ADoor::ShowInteractionWidget()
 
 void ADoor::HideInteractionWidget()
 {
+}
+
+void ADoor::RequestInteract(APlayerCharacter* player)
+{
+	//bool requestResult = player->
+	//DoorToggle(requestResult);
+	//isActive = requestResult;
+
 }
 
 
