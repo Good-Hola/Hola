@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PlayerCharacter.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
@@ -8,6 +7,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+//#include "InteractObject.h"
 #include "TestWeapon.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -98,6 +98,24 @@ void APlayerCharacter::DetectObject()
 	TArray<AActor*>OverlappingActors;
 
 	TriggerCapsule->GetOverlappingActors(OverlappingActors);
+
+	FHitResult hitResult;
+	FCollisionQueryParams sweepParams;
+	sweepParams.AddIgnoredActor(this);
+
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		hitResult, GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * 10.0f,
+		FQuat(),
+		ECollisionChannel::ECC_GameTraceChannel3,
+		FCollisionShape::MakeSphere(50.0f),
+		sweepParams
+	);
+
+	if (bResult)
+	{
+
+	}
 
 	if (OverlappingActors.Num() == 0)
 	{
