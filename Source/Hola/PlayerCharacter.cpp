@@ -7,7 +7,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
-//#include "InteractObject.h"
+#include "InteractObject.h"
 #include "TestWeapon.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -16,6 +16,7 @@ APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel4);
 
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
@@ -50,7 +51,7 @@ APlayerCharacter::APlayerCharacter()
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
 	TriggerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
-	TriggerCapsule->InitCapsuleSize(42.f, 96.0f);
+	TriggerCapsule->InitCapsuleSize(60.f, 96.0f);
 	TriggerCapsule->SetCollisionProfileName(TEXT("Trigger"));
 	TriggerCapsule->SetupAttachment(RootComponent);
 
@@ -89,28 +90,32 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	DetectObject();
 }
 
 void APlayerCharacter::DetectObject()
 {
 	TArray<AActor*>OverlappingActors;
+	
+	TriggerCapsule->GetOverlappingActors(OverlappingActors, AInteractObject::StaticClass());
 
-	TriggerCapsule->GetOverlappingActors(OverlappingActors);
+	if (OverlappingActors.Num() == 0)
+		return ;
+	UE_LOG(LogTemp, Log, TEXT("nums : %d"), OverlappingActors.Num());
 
-	FHitResult hitResult;
-	FCollisionQueryParams sweepParams;
-	sweepParams.AddIgnoredActor(this);
+	AActor* Closest = OverlappingActors[0];
+	for (auto CurrentActor : OverlappingActors)
+	{
+		if (GetDistanceTo(CurrentActor) < GetDistanceTo(Closest))
+		{
+			Cast<AInteractObject>(Closest)->SetWidgetStatus(false);
+			Closest = CurrentActor;
+		}
+	}
 
-	bool bResult = GetWorld()->SweepSingleByChannel(
-		hitResult, GetActorLocation(),
-		GetActorLocation() + GetActorForwardVector() * 10.0f,
-		FQuat(),
-		ECollisionChannel::ECC_GameTraceChannel3,
-		FCollisionShape::MakeSphere(50.0f),
-		sweepParams
-	);
+	focusedActor = Cast<AInteractObject>(Closest);
+	focusedActor->SetWidgetStatus(true);
+		//AInteractObject* a = Cast<AInteractObject>(CurrentActor);
+	/*
 
 	if (bResult)
 	{
@@ -148,43 +153,36 @@ void APlayerCharacter::DetectObject()
 	{
 		Interface->ShowInteractionWidget();
 	}
-
+	*/
 }
 
 void APlayerCharacter::OnInteract()
 {
-	if (Interface)
+	if (focusedActor)
 	{
-		Interface->InteractWithme();
+		//if (focusedActor->GetNeedEnergy() < 내가 가진 에너지)
+		// 내가 가진 에너지 - focusedActor->GetNeedEnergy()
+		focusedActor->Interact();
 	}
 }
 
 void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	/*
-	Interface = Cast<IInteractionInterface>(OtherActor);
-
-	if (Interface)
+	if (OtherActor && (OtherActor != this))
 	{
-		Interface->ShowInteractionWidget();
+		DetectObject();
 	}
-
-	//if (Interface)
-	//{
-	//	Interface->InteractWithme();
-	//}
-	*/
 }
 
 void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-/*
-	if (Interface)
+	AInteractObject* obj = Cast<AInteractObject>(OtherActor);
+	if (obj && obj == focusedActor)
 	{
-		Interface->HideInteractionWidget();
-		Interface = nullptr;
+		obj->SetWidgetStatus(false);
+		focusedActor = nullptr;
+		DetectObject();
 	}
-*/
 }
 
 void APlayerCharacter::TurnAtRate(float Rate)

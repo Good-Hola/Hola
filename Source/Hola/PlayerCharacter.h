@@ -70,6 +70,8 @@ protected:
 
 	virtual	void BeginPlay() override;
 
+	class AInteractObject* focusedActor;
+
 
 public:
 	/** Returns CameraBoom subobject **/
