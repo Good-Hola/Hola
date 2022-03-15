@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "InteractionInterface.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -93,8 +92,6 @@ public:
 	void SetWeapon(class ATestWeapon* NewWeapon);
 
 private:
-
-	IInteractionInterface* Interface = nullptr;
 
 	void OnInteract();
 

@@ -114,46 +114,7 @@ void APlayerCharacter::DetectObject()
 
 	focusedActor = Cast<AInteractObject>(Closest);
 	focusedActor->SetWidgetStatus(true);
-		//AInteractObject* a = Cast<AInteractObject>(CurrentActor);
-	/*
 
-	if (bResult)
-	{
-
-	}
-
-	if (OverlappingActors.Num() == 0)
-	{
-		if (Interface)
-		{
-			Interface->HideInteractionWidget();
-			Interface = nullptr;
-		}
-		return;
-	}
-
-	AActor* ClosestActor = OverlappingActors[0];
-
-	for (auto CurrentActor : OverlappingActors)
-	{
-		if (GetDistanceTo(CurrentActor) < GetDistanceTo(ClosestActor))
-		{
-			ClosestActor = CurrentActor;
-		}
-	}
-
-	if (Interface)
-	{
-		Interface->HideInteractionWidget();
-	}
-
-	Interface = Cast<IInteractionInterface>(ClosestActor);
-
-	if (Interface)
-	{
-		Interface->ShowInteractionWidget();
-	}
-	*/
 }
 
 void APlayerCharacter::OnInteract()
