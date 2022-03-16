@@ -11,9 +11,12 @@ AInteractObject::AInteractObject()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	scene = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	RootComponent = scene;
+
 	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	check(mesh);
-	RootComponent = mesh;
+	mesh->SetupAttachment(scene);
 	mesh->SetCollisionObjectType(ECC_GameTraceChannel1);
 
 	widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
@@ -27,7 +30,7 @@ void AInteractObject::BeginPlay()
 {
 	Super::BeginPlay();
 	widget->SetVisibility(false);
-	//InputComponent->BindAction("Interact", IE_Pressed, this, &AInteractObject::Interact);
+	isAct = false;
 }
 
 // Called every frame
@@ -47,6 +50,7 @@ void AInteractObject::Interact_Implementation()
 {
 	if (needEnergy > 0)
 	{
+		isAct = !isAct;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("interact : %d"));
 		UE_LOG(LogTemp, Log, TEXT("energy : %d"), needEnergy);
 	}

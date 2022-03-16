@@ -16,14 +16,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = Energy)
 		int needEnergy;
 
-	UPROPERTY(EditAnywhere, Category = Sound)
-		class USoundBase* interactionSound;
-
-	UPROPERTY(EditAnywhere, Category = Mesh)
-		class UStaticMeshComponent* mesh;
-
-	UPROPERTY(EditInstanceOnly)
-		class UWidgetComponent* widget;
 
 public:
 	// Sets default values for this actor's properties
@@ -33,6 +25,20 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadOnly, Category = "flag")
+		bool isAct;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Scene)
+		class USceneComponent* scene;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+		class USoundBase* interactionSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+		class UStaticMeshComponent* mesh;
+
+	UPROPERTY(EditInstanceOnly)
+		class UWidgetComponent* widget;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
