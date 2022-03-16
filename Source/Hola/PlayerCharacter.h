@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "InteractionInterface.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -70,6 +69,8 @@ protected:
 
 	virtual	void BeginPlay() override;
 
+	class AInteractObject* focusedActor;
+
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -91,8 +92,6 @@ public:
 	void SetWeapon(class ATestWeapon* NewWeapon);
 
 private:
-
-	IInteractionInterface* Interface = nullptr;
 
 	void OnInteract();
 
