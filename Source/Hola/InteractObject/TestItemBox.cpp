@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TestItemBox.h"
-#include "PlayerCharacter.h"
+#include "../Character/PlayerCharacter.h"
 #include "TestWeapon.h"
 #include "Components/BoxComponent.h"
 

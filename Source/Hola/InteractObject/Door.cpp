@@ -2,7 +2,7 @@
 
 
 #include "Door.h"
-#include "PlayerCharacter.h"
+#include "../Character/PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Animation/AnimInstance.h"
 #include "Engine/Classes/Components/StaticMeshComponent.h"

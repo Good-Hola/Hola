@@ -7,8 +7,8 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
-#include "InteractObject.h"
-#include "TestWeapon.h"
+#include "../InteractObject/InteractObject.h"
+#include "../InteractObject/TestWeapon.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values

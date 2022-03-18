@@ -2,7 +2,7 @@
 
 
 #include "InteractionInterface.h"
-#include "PlayerCharacter.h"
+#include "../Character/PlayerCharacter.h"
 
 // Add default functionality here for any IInteractionInterface functions that are not pure virtual.
 void IInteractionInterface::InteractWithme()
