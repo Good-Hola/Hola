@@ -11,18 +11,16 @@ class HOLA_API AInteractObject : public AActor
 {
 	GENERATED_BODY()
 
-private:
-
-	UPROPERTY(EditAnywhere, Category = Energy)
-		int needEnergy;
-
 
 public:
 	// Sets default values for this actor's properties
 	AInteractObject();
 
 protected:
-	// Called when the game starts or when spawned
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetNeedEnergy, Category = Energy)
+		int needEnergy;
+
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadOnly, Category = "flag")
@@ -44,7 +42,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintGetter, Category = "Energy")
-		float GetNeedEnergy();
+		int GetNeedEnergy();
 
 	UFUNCTION(BlueprintNativeEvent)
 		void Interact();

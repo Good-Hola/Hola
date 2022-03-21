@@ -40,7 +40,7 @@ void AInteractObject::Tick(float DeltaTime)
 
 }
 
-float AInteractObject::GetNeedEnergy()
+int AInteractObject::GetNeedEnergy()
 {
 	return needEnergy;
 }

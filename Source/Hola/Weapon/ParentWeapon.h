@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ParentObject.h"
+#include "../InteractObject/ParentObject.h"
 #include "ParentWeapon.generated.h"
 
 UCLASS()
