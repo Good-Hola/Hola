@@ -48,12 +48,9 @@ int AInteractObject::GetNeedEnergy()
 
 void AInteractObject::Interact_Implementation()
 {
-	if (needEnergy > 0)
-	{
-		isAct = !isAct;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("interact : %d"));
-		UE_LOG(LogTemp, Log, TEXT("energy : %d"), needEnergy);
-	}
+	isAct = !isAct;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("interact : %d"));
+	UE_LOG(LogTemp, Log, TEXT("energy : %d"), needEnergy);
 }
 
 void AInteractObject::SetWidgetStatus(bool status)

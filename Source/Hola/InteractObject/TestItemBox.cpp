@@ -53,7 +53,7 @@ void ATestItemBox::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActo
 		if (Character->CanSetWeapon())
 		{
 			auto NewWeapon = GetWorld()->SpawnActor<ATestWeapon>(WeaponItemClass, FVector::ZeroVector, FRotator::ZeroRotator);
-			Character->SetWeapon(NewWeapon);
+		//	Character->SetWeapon(NewWeapon);
 		}
 		else
 		{

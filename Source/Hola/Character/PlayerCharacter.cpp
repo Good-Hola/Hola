@@ -7,8 +7,10 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
-#include "../InteractObject/InteractObject.h"
 #include "../InteractObject/TestWeapon.h"
+#include "../InteractObject/InteractObject.h"
+#include "../InteractObject/InteractWeapon.h"
+#include "../Weapon/Weapon.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -117,16 +119,6 @@ void APlayerCharacter::DetectObject()
 
 }
 
-void APlayerCharacter::OnInteract()
-{
-	if (focusedActor)
-	{
-		//if (focusedActor->GetNeedEnergy() < 내가 가진 에너지)
-		// 내가 가진 에너지 - focusedActor->GetNeedEnergy()
-		focusedActor->Interact();
-	}
-}
-
 void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor && (OtherActor != this))
@@ -199,13 +191,50 @@ void APlayerCharacter::MoveRight(float Value)
 //	isCrouching = false;
 //}
 
+
+float APlayerCharacter::GetHealth()
+{
+	return health;
+}
+
+
+float APlayerCharacter::GetEnergy()
+{
+	return energy;
+}
+
+void APlayerCharacter::OnInteract()
+{
+	// InteractWeapon인지 아닌지 체크
+	AInteractWeapon* w = Cast<AInteractWeapon>(focusedActor);
+	if (w)
+	{
+		// weapon일 시 캐릭터 array에 저장
+		SetWeapon(w->GetWeapon());
+		w->Interact();
+	}
+	else if (focusedActor)
+	{
+		//if (focusedActor->GetNeedEnergy() < 내가 가진 에너지)
+		// 내가 가진 에너지 - focusedActor->GetNeedEnergy()
+		focusedActor->Interact();
+	}
+}
+
 bool APlayerCharacter::CanSetWeapon()
 {
 	return nullptr == currentWeapon;
 }
 
-void APlayerCharacter::SetWeapon(ATestWeapon* NewWeapon)
+void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
 {
+	UE_LOG(LogTemp, Log, TEXT("Set Set"));
+
+}
+
+
+
+	/*
 	if (nullptr != NewWeapon && nullptr == currentWeapon)
 		UE_LOG(LogTemp, Log, TEXT("Can't equip weapon"));
 	FName WeaponSocket(TEXT("hand_rSocket"));
@@ -216,4 +245,4 @@ void APlayerCharacter::SetWeapon(ATestWeapon* NewWeapon)
 		NewWeapon->AddActorLocalRotation(FQuat(0.f, 0.f, 0.f, 93.f));
 		currentWeapon = NewWeapon;
 	}
-}
+	*/

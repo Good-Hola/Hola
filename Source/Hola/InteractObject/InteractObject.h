@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "InteractObject.generated.h"
 
-UCLASS()
+UCLASS(abstract)
 class HOLA_API AInteractObject : public AActor
 {
 	GENERATED_BODY()
@@ -45,7 +45,8 @@ public:
 		int GetNeedEnergy();
 
 	UFUNCTION(BlueprintNativeEvent)
-		void Interact();
+	void Interact();
+	virtual void Interact_Implementation();
 
 	virtual void SetWidgetStatus(bool status);
 };
