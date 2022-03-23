@@ -7,7 +7,12 @@ AWeapon::AWeapon()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	scene = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	check(scene);
+	RootComponent = scene;
+
 	weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
+	check(weapon);
 	weapon->SetupAttachment(RootComponent);
 	weapon->SetCollisionProfileName(TEXT("NoCollision"));
 
@@ -19,16 +24,12 @@ void AWeapon::BeginPlay()
 	
 }
 
-void AWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-}
-
-void AWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-}
-
 int AWeapon::GetDamage()
 {								
 	return damage;
+}
+
+void AWeapon::Attack()
+{
 }
 
