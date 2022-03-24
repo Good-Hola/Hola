@@ -17,7 +17,6 @@ class HOLA_API AInteractWeapon : public AInteractObject
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 		TSubclassOf<class AWeapon> weapon;
 
-	virtual void Interact_Implementation() override;
 
 public:
 	class AWeapon *GetWeapon();

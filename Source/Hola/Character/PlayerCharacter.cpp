@@ -203,21 +203,22 @@ float APlayerCharacter::GetEnergy()
 	return energy;
 }
 
+void APlayerCharacter::SetHealth(float hp)
+{
+	health = hp;
+}
+
+void APlayerCharacter::SetEnergy(float en)
+{
+	energy = en;
+}
+
 void APlayerCharacter::OnInteract()
 {
 	// InteractWeapon인지 아닌지 체크
-	AInteractWeapon* w = Cast<AInteractWeapon>(focusedActor);
-	if (w)
+	if (focusedActor)
 	{
-		// weapon일 시 캐릭터 array에 저장
-		SetWeapon(w->GetWeapon());
-		w->Interact();
-	}
-	else if (focusedActor)
-	{
-		//if (focusedActor->GetNeedEnergy() < 내가 가진 에너지)
-		// 내가 가진 에너지 - focusedActor->GetNeedEnergy()
-		focusedActor->Interact();
+		focusedActor->Interact(this);
 	}
 }
 

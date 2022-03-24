@@ -4,13 +4,6 @@
 #include "InteractWeapon.h"
 #include "../Weapon/Weapon.h"
 
-void AInteractWeapon::Interact_Implementation()
-{
-	Super::Interact_Implementation();
-	//weapon을 character에 저장해줘야함
-	UE_LOG(LogTemp, Log, TEXT("child"));
-}
-
 AWeapon *AInteractWeapon::GetWeapon()
 {
 	UWorld* world = GetWorld();

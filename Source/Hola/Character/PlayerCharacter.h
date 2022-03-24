@@ -11,10 +11,10 @@ class HOLA_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintGetter = GetHealth, Category = Stat)
+	UPROPERTY(BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
 	float health;
 
-	UPROPERTY(BlueprintGetter = GetEnergy, Category = Stat)
+	UPROPERTY(BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
 	float energy;
 
 	/** Camera boom positioning the camera behind the character */
@@ -105,6 +105,12 @@ public:
 
 	UFUNCTION(BlueprintGetter, Category = Stat)
 		float GetEnergy();
+
+	UFUNCTION(BlueprintSetter, Category = Stat)
+		void SetHealth(float hp);
+
+	UFUNCTION(BlueprintSetter, Category = Stat)
+		void SetEnergy(float en);
 
 private:
 

@@ -44,9 +44,15 @@ public:
 	UFUNCTION(BlueprintGetter, Category = "Energy")
 		int GetNeedEnergy();
 
+	void Interact(class APlayerCharacter* character);
+
 	UFUNCTION(BlueprintNativeEvent)
-	void Interact();
-	virtual void Interact_Implementation();
+	void TurnOn(class APlayerCharacter* character);
+	virtual void TurnOn_Implementation(class APlayerCharacter* character);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void TurnOff(class APlayerCharacter* character);
+	virtual void TurnOff_Implementation(class APlayerCharacter* character);
 
 	virtual void SetWidgetStatus(bool status);
 };

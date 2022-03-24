@@ -4,6 +4,7 @@
 #include "InteractObject.h"
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "../Character/PlayerCharacter.h"
 
 // Sets default values
 AInteractObject::AInteractObject()
@@ -46,11 +47,31 @@ int AInteractObject::GetNeedEnergy()
 }
 
 
-void AInteractObject::Interact_Implementation()
+void AInteractObject::Interact(APlayerCharacter* character)
+{
+	UE_LOG(LogTemp, Log, TEXT("is act : %d"), isAct);
+	if (!isAct)
+		TurnOn(character);
+	else
+		TurnOff(character);
+}
+
+void AInteractObject::TurnOn_Implementation(APlayerCharacter* character)
+{
+	if (character->GetEnergy() >= needEnergy)
+	{
+		isAct = !isAct;
+		UE_LOG(LogTemp, Log, TEXT("Enough Energy"));
+	}
+	else
+		UE_LOG(LogTemp, Log, TEXT("Not Enough Energy"));
+	UE_LOG(LogTemp, Log, TEXT("Turn On"));
+}
+
+void AInteractObject::TurnOff_Implementation(APlayerCharacter* character)
 {
 	isAct = !isAct;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("interact : %d"));
-	UE_LOG(LogTemp, Log, TEXT("energy : %d"), needEnergy);
+	UE_LOG(LogTemp, Log, TEXT("Turn Off"));
 }
 
 void AInteractObject::SetWidgetStatus(bool status)
