@@ -43,11 +43,10 @@ public:
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
 	//bool isCrouching;
 
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
-		class ATestWeapon* currentWeapon;
-
 	UPROPERTY()
 		TArray<class AWeapon*> weapon;
+	
+	int currentWeaponIndex;
 
 protected:
 	/** Called for forwards/backward input */
@@ -111,6 +110,8 @@ public:
 
 	UFUNCTION(BlueprintSetter, Category = Stat)
 		void SetEnergy(float en);
+
+	void SetWeapon();
 
 private:
 

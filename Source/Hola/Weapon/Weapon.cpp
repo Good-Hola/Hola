@@ -5,7 +5,7 @@
 
 AWeapon::AWeapon()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	scene = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	check(scene);
@@ -18,15 +18,24 @@ AWeapon::AWeapon()
 
 }
 
-void AWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
 int AWeapon::GetDamage()
 {								
 	return damage;
+}
+
+EWeaponType AWeapon::GetWeaponType()
+{
+	return weaponType;
+}
+
+FString AWeapon::GetHoldSocketName()
+{
+	return weaponHoldSocketName;
+}
+
+FString AWeapon::GetBackSocketName()
+{
+	return weaponBackSocketName;
 }
 
 void AWeapon::Attack()

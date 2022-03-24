@@ -34,13 +34,6 @@ void AInteractObject::BeginPlay()
 	isAct = false;
 }
 
-// Called every frame
-void AInteractObject::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 int AInteractObject::GetNeedEnergy()
 {
 	return needEnergy;

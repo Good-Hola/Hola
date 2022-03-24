@@ -17,8 +17,10 @@ class HOLA_API AInteractWeapon : public AInteractObject
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 		TSubclassOf<class AWeapon> weapon;
 
-
 public:
-	class AWeapon *GetWeapon();
+
+	virtual void TurnOn_Implementation(class APlayerCharacter* character);
+
+	virtual void TurnOff_Implementation(class APlayerCharacter* character);
 	
 };

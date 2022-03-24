@@ -6,6 +6,13 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	MELEE	UMETA(DisplayName = "Melee"),
+	RANGED	UMETA(DisplayName = "Ranged"),
+};
+
 UCLASS()
 class HOLA_API AWeapon : public AActor
 {
@@ -20,16 +27,33 @@ class HOLA_API AWeapon : public AActor
 	UPROPERTY(VisibleAnywhere, Category = weapon)
 		class USkeletalMeshComponent* weapon;
 
+	UPROPERTY(EditDefaultsOnly, Category = weapon)
+		TSubclassOf<class AInteractWeapon> spawnWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = weapon)
+		FString weaponHoldSocketName;
+
+	UPROPERTY(EditDefaultsOnly, Category = weapon)
+		FString weaponBackSocketName;
+
+	UPROPERTY(EditDefaultsOnly, Category = weapon)
+		EWeaponType weaponType;
+
 public:	
 	AWeapon();
 
-protected:
-	virtual void BeginPlay() override;
-
-public:	
-
-	UFUNCTION(BlueprintGetter, Category = Damage)
+public:
+	UFUNCTION(BlueprintGetter, Category = weapon)
 	int GetDamage();
+
+	UFUNCTION(BlueprintGetter, Category = weapon)
+		EWeaponType GetWeaponType();
+
+	UFUNCTION(BlueprintGetter, Category = weapon)
+		FString GetHoldSocketName();
+
+	UFUNCTION(BlueprintGetter, Category = weapon)
+		FString GetBackSocketName();
 
 	UFUNCTION()
 	virtual void Attack();

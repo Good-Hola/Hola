@@ -3,14 +3,21 @@
 
 #include "InteractWeapon.h"
 #include "../Weapon/Weapon.h"
+#include "../Character/PlayerCharacter.h"
 
-AWeapon *AInteractWeapon::GetWeapon()
+void AInteractWeapon::TurnOn_Implementation(APlayerCharacter* character)
 {
-	UWorld* world = GetWorld();
-	if (world)
+	if (character && weapon && GetWorld())
 	{
-		AWeapon *newWeapon = world->SpawnActor<AWeapon>(weapon, FVector::ZeroVector, FRotator::ZeroRotator);
-		return newWeapon;
+		AWeapon *newWeapon = GetWorld()->SpawnActor<AWeapon>(weapon, character->GetActorLocation(), character->GetActorRotation());
+		character->SetWeapon(newWeapon);
+		Destroy();
 	}
-	return nullptr;
+
+}
+
+void AInteractWeapon::TurnOff_Implementation(APlayerCharacter* character)
+{
+	UE_LOG(LogTemp, Log, TEXT("this is weapon turn off"));
+
 }

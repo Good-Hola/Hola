@@ -38,8 +38,6 @@ protected:
 	UPROPERTY(EditInstanceOnly)
 		class UWidgetComponent* widget;
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintGetter, Category = "Energy")
 		int GetNeedEnergy();

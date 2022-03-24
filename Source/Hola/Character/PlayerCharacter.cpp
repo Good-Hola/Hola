@@ -17,6 +17,7 @@
 APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
+	GetCapsuleComponent()->SetCollisionProfileName("Pawn");
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel4);
 
@@ -60,6 +61,8 @@ APlayerCharacter::APlayerCharacter()
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 
+
+	weapon.Init(nullptr, 2);
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -215,7 +218,6 @@ void APlayerCharacter::SetEnergy(float en)
 
 void APlayerCharacter::OnInteract()
 {
-	// InteractWeapon인지 아닌지 체크
 	if (focusedActor)
 	{
 		focusedActor->Interact(this);
@@ -224,13 +226,39 @@ void APlayerCharacter::OnInteract()
 
 bool APlayerCharacter::CanSetWeapon()
 {
-	return nullptr == currentWeapon;
+	return nullptr;
 }
 
 void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
 {
-	UE_LOG(LogTemp, Log, TEXT("Set Set"));
-
+	if (newWeapon)
+	{
+		FName WeaponSocket;
+		if (newWeapon->GetWeaponType() == EWeaponType::MELEE)
+		{
+			if (currentWeaponIndex == 0)
+				WeaponSocket = FName(*(newWeapon->GetHoldSocketName()));
+			else if (currentWeaponIndex == 1)
+				WeaponSocket = FName(*(newWeapon->GetBackSocketName()));
+			newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+			newWeapon->SetOwner(this);
+			if (weapon[0])
+				weapon[0]->Destroy();
+			weapon[0] = newWeapon;
+		}
+		else if (newWeapon->GetWeaponType() == EWeaponType::RANGED)
+		{
+			if (currentWeaponIndex == 1)
+				WeaponSocket = FName(*(newWeapon->GetHoldSocketName()));
+			else if (currentWeaponIndex == 0)
+				WeaponSocket = FName(*(newWeapon->GetBackSocketName()));
+			newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+			newWeapon->SetOwner(this);
+			if (weapon[1])
+				weapon[1]->Destroy();
+			weapon[1] = newWeapon;
+		}
+	}
 }
 
 

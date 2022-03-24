@@ -5,6 +5,6 @@ AMeleeWeapon::AMeleeWeapon()
 {
 	hitBox = CreateDefaultSubobject<UCapsuleComponent>(TEXT("HitBox"));
 	hitBox->SetupAttachment(RootComponent);
-	hitBox->SetCollisionProfileName(TEXT(""));
+	hitBox->SetCollisionProfileName(TEXT("HolaWeapon"));
 }
 
