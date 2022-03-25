@@ -11,12 +11,6 @@ class HOLA_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
-	float health;
-
-	UPROPERTY(BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
-	float energy;
-
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
@@ -43,10 +37,8 @@ public:
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
 	//bool isCrouching;
 
-	UPROPERTY()
-		TArray<class AWeapon*> weapon;
-	
-	int currentWeaponIndex;
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+		class ATestWeapon* currentWeapon;
 
 protected:
 	/** Called for forwards/backward input */
@@ -97,21 +89,7 @@ public:
 		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	bool CanSetWeapon();
-	void SetWeapon(class AWeapon* newWeapon);
-
-	UFUNCTION(BlueprintGetter, Category = Stat)
-		float GetHealth();
-
-	UFUNCTION(BlueprintGetter, Category = Stat)
-		float GetEnergy();
-
-	UFUNCTION(BlueprintSetter, Category = Stat)
-		void SetHealth(float hp);
-
-	UFUNCTION(BlueprintSetter, Category = Stat)
-		void SetEnergy(float en);
-
-	void SetWeapon();
+	void SetWeapon(class ATestWeapon* NewWeapon);
 
 private:
 
