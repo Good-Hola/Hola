@@ -32,6 +32,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
 		class USoundBase* interactionSound;
 
+protected:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 		class UStaticMeshComponent* mesh;
 

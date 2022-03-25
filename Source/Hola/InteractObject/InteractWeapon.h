@@ -18,6 +18,7 @@ class HOLA_API AInteractWeapon : public AInteractObject
 		TSubclassOf<class AWeapon> weapon;
 
 public:
+	AInteractWeapon();
 
 	virtual void TurnOn_Implementation(class APlayerCharacter* character);
 

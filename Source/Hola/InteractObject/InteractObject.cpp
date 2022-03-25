@@ -19,6 +19,7 @@ AInteractObject::AInteractObject()
 	check(mesh);
 	mesh->SetupAttachment(scene);
 	mesh->SetCollisionObjectType(ECC_GameTraceChannel1);
+	mesh->SetCollisionProfileName(TEXT("HolaObject"));
 
 	widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	check(widget);

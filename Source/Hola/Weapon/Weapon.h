@@ -4,21 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../Utils/HolaTypes.h"
 #include "Weapon.generated.h"
-
-UENUM(BlueprintType)
-enum class EWeaponType : uint8
-{
-	MELEE	UMETA(DisplayName = "Melee"),
-	RANGED	UMETA(DisplayName = "Ranged"),
-};
 
 UCLASS()
 class HOLA_API AWeapon : public AActor
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetDamage, Category = Damage)
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetDamage, Category = weapon)
 		int damage;
 
 	UPROPERTY(VisibleAnywhere, Category = Scene)

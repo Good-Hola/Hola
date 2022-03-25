@@ -14,7 +14,7 @@ AWeapon::AWeapon()
 	weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
 	check(weapon);
 	weapon->SetupAttachment(RootComponent);
-	weapon->SetCollisionProfileName(TEXT("NoCollision"));
+	weapon->SetCollisionProfileName(TEXT("HolaWeapon"));
 
 }
 
@@ -41,4 +41,3 @@ FString AWeapon::GetBackSocketName()
 void AWeapon::Attack()
 {
 }
-

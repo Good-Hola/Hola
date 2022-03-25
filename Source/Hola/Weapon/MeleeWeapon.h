@@ -7,7 +7,7 @@
 /**
  * 
  */
-UCLASS(abstract)
+UCLASS()
 class HOLA_API AMeleeWeapon : public AWeapon
 {
 	GENERATED_BODY()

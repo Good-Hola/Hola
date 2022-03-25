@@ -17,7 +17,7 @@
 APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
-	GetCapsuleComponent()->SetCollisionProfileName("Pawn");
+	GetCapsuleComponent()->SetCollisionProfileName("HolaCharacter");
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel4);
 

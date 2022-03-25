@@ -5,6 +5,12 @@
 #include "../Weapon/Weapon.h"
 #include "../Character/PlayerCharacter.h"
 
+AInteractWeapon::AInteractWeapon()
+{
+	mesh->SetCollisionObjectType(ECC_GameTraceChannel5);
+	mesh->SetCollisionProfileName(TEXT("HolaObject"));
+}
+
 void AInteractWeapon::TurnOn_Implementation(APlayerCharacter* character)
 {
 	if (character && weapon && GetWorld())
