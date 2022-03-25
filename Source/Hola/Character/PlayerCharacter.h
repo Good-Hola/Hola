@@ -96,6 +96,7 @@ public:
 	void OnTriggerEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+
 	bool CanSetWeapon();
 	void SetWeapon(class AWeapon* newWeapon);
 
