@@ -7,14 +7,14 @@
 #include "InteractWeapon.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class HOLA_API AInteractWeapon : public AInteractObject
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Category = Weapon)
+		UPROPERTY(EditDefaultsOnly, Category = Weapon)
 		TSubclassOf<class AWeapon> weapon;
 
 public:
@@ -23,5 +23,5 @@ public:
 	virtual void TurnOn_Implementation(class APlayerCharacter* character);
 
 	virtual void TurnOff_Implementation(class APlayerCharacter* character);
-	
+
 };

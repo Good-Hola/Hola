@@ -15,7 +15,7 @@ void AInteractWeapon::TurnOn_Implementation(APlayerCharacter* character)
 {
 	if (character && weapon && GetWorld())
 	{
-		AWeapon *newWeapon = GetWorld()->SpawnActor<AWeapon>(weapon, character->GetActorLocation(), character->GetActorRotation());
+		AWeapon* newWeapon = GetWorld()->SpawnActor<AWeapon>(weapon, character->GetActorLocation(), character->GetActorRotation());
 		character->SetWeapon(newWeapon);
 		Destroy();
 	}

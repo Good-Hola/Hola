@@ -19,7 +19,7 @@ AWeapon::AWeapon()
 }
 
 int AWeapon::GetDamage()
-{								
+{
 	return damage;
 }
 

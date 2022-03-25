@@ -11,8 +11,8 @@ UCLASS()
 class HOLA_API AWeapon : public AActor
 {
 	GENERATED_BODY()
-	
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetDamage, Category = weapon)
+
+		UPROPERTY(EditAnywhere, BlueprintGetter = GetDamage, Category = weapon)
 		int damage;
 
 	UPROPERTY(VisibleAnywhere, Category = Scene)
@@ -33,12 +33,12 @@ class HOLA_API AWeapon : public AActor
 	UPROPERTY(EditDefaultsOnly, Category = weapon)
 		EWeaponType weaponType;
 
-public:	
+public:
 	AWeapon();
 
 public:
 	UFUNCTION(BlueprintGetter, Category = weapon)
-	int GetDamage();
+		int GetDamage();
 
 	UFUNCTION(BlueprintGetter, Category = weapon)
 		EWeaponType GetWeaponType();
@@ -50,7 +50,7 @@ public:
 		FString GetBackSocketName();
 
 	UFUNCTION()
-	virtual void Attack();
+		virtual void Attack();
 
 
 };

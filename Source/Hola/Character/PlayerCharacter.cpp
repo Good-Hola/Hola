@@ -7,7 +7,6 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
-#include "../InteractObject/TestWeapon.h"
 #include "../InteractObject/InteractObject.h"
 #include "../InteractObject/InteractWeapon.h"
 #include "../Weapon/Weapon.h"
@@ -100,11 +99,11 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 void APlayerCharacter::DetectObject()
 {
 	TArray<AActor*>OverlappingActors;
-	
+
 	TriggerCapsule->GetOverlappingActors(OverlappingActors, AInteractObject::StaticClass());
 
 	if (OverlappingActors.Num() == 0)
-		return ;
+		return;
 	UE_LOG(LogTemp, Log, TEXT("nums : %d"), OverlappingActors.Num());
 
 	AActor* Closest = OverlappingActors[0];
@@ -263,15 +262,15 @@ void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
 
 
 
-	/*
-	if (nullptr != NewWeapon && nullptr == currentWeapon)
-		UE_LOG(LogTemp, Log, TEXT("Can't equip weapon"));
-	FName WeaponSocket(TEXT("hand_rSocket"));
-	if (NewWeapon != nullptr)
-	{
-		NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-		NewWeapon->SetOwner(this);
-		NewWeapon->AddActorLocalRotation(FQuat(0.f, 0.f, 0.f, 93.f));
-		currentWeapon = NewWeapon;
-	}
-	*/
+/*
+if (nullptr != NewWeapon && nullptr == currentWeapon)
+	UE_LOG(LogTemp, Log, TEXT("Can't equip weapon"));
+FName WeaponSocket(TEXT("hand_rSocket"));
+if (NewWeapon != nullptr)
+{
+	NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	NewWeapon->SetOwner(this);
+	NewWeapon->AddActorLocalRotation(FQuat(0.f, 0.f, 0.f, 93.f));
+	currentWeapon = NewWeapon;
+}
+*/

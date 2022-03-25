@@ -5,20 +5,20 @@
 #include "MeleeWeapon.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class HOLA_API AMeleeWeapon : public AWeapon
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, Category = "Collision")
+		UPROPERTY(VisibleAnywhere, Category = "Collision")
 		class UCapsuleComponent* hitBox;
 
 public:
 	AMeleeWeapon();
 
 protected:
-	
-	
+
+
 };
