@@ -8,13 +8,15 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "../InteractObject/InteractObject.h"
-#include "../InteractObject/TestWeapon.h"
+#include "../InteractObject/InteractWeapon.h"
+#include "../Weapon/Weapon.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
+	GetCapsuleComponent()->SetCollisionProfileName("HolaCharacter");
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel4);
 
@@ -58,6 +60,8 @@ APlayerCharacter::APlayerCharacter()
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 
+
+	weapon.Init(nullptr, 2);
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -95,11 +99,11 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 void APlayerCharacter::DetectObject()
 {
 	TArray<AActor*>OverlappingActors;
-	
+
 	TriggerCapsule->GetOverlappingActors(OverlappingActors, AInteractObject::StaticClass());
 
 	if (OverlappingActors.Num() == 0)
-		return ;
+		return;
 	UE_LOG(LogTemp, Log, TEXT("nums : %d"), OverlappingActors.Num());
 
 	AActor* Closest = OverlappingActors[0];
@@ -115,16 +119,6 @@ void APlayerCharacter::DetectObject()
 	focusedActor = Cast<AInteractObject>(Closest);
 	focusedActor->SetWidgetStatus(true);
 
-}
-
-void APlayerCharacter::OnInteract()
-{
-	if (focusedActor)
-	{
-		//if (focusedActor->GetNeedEnergy() < 내가 가진 에너지)
-		// 내가 가진 에너지 - focusedActor->GetNeedEnergy()
-		focusedActor->Interact();
-	}
 }
 
 void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -199,21 +193,84 @@ void APlayerCharacter::MoveRight(float Value)
 //	isCrouching = false;
 //}
 
-bool APlayerCharacter::CanSetWeapon()
+
+float APlayerCharacter::GetHealth()
 {
-	return nullptr == currentWeapon;
+	return health;
 }
 
-void APlayerCharacter::SetWeapon(ATestWeapon* NewWeapon)
+
+float APlayerCharacter::GetEnergy()
 {
-	if (nullptr != NewWeapon && nullptr == currentWeapon)
-		UE_LOG(LogTemp, Log, TEXT("Can't equip weapon"));
-	FName WeaponSocket(TEXT("hand_rSocket"));
-	if (NewWeapon != nullptr)
+	return energy;
+}
+
+void APlayerCharacter::SetHealth(float hp)
+{
+	health = hp;
+}
+
+void APlayerCharacter::SetEnergy(float en)
+{
+	energy = en;
+}
+
+void APlayerCharacter::OnInteract()
+{
+	if (focusedActor)
 	{
-		NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-		NewWeapon->SetOwner(this);
-		NewWeapon->AddActorLocalRotation(FQuat(0.f, 0.f, 0.f, 93.f));
-		currentWeapon = NewWeapon;
+		focusedActor->Interact(this);
 	}
 }
+
+bool APlayerCharacter::CanSetWeapon()
+{
+	return nullptr;
+}
+
+void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
+{
+	if (newWeapon)
+	{
+		FName WeaponSocket;
+		if (newWeapon->GetWeaponType() == EWeaponType::MELEE)
+		{
+			if (currentWeaponIndex == 0)
+				WeaponSocket = FName(*(newWeapon->GetHoldSocketName()));
+			else if (currentWeaponIndex == 1)
+				WeaponSocket = FName(*(newWeapon->GetBackSocketName()));
+			newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+			newWeapon->SetOwner(this);
+			if (weapon[0])
+				weapon[0]->Destroy();
+			weapon[0] = newWeapon;
+		}
+		else if (newWeapon->GetWeaponType() == EWeaponType::RANGED)
+		{
+			if (currentWeaponIndex == 1)
+				WeaponSocket = FName(*(newWeapon->GetHoldSocketName()));
+			else if (currentWeaponIndex == 0)
+				WeaponSocket = FName(*(newWeapon->GetBackSocketName()));
+			newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+			newWeapon->SetOwner(this);
+			if (weapon[1])
+				weapon[1]->Destroy();
+			weapon[1] = newWeapon;
+		}
+	}
+}
+
+
+
+/*
+if (nullptr != NewWeapon && nullptr == currentWeapon)
+	UE_LOG(LogTemp, Log, TEXT("Can't equip weapon"));
+FName WeaponSocket(TEXT("hand_rSocket"));
+if (NewWeapon != nullptr)
+{
+	NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	NewWeapon->SetOwner(this);
+	NewWeapon->AddActorLocalRotation(FQuat(0.f, 0.f, 0.f, 93.f));
+	currentWeapon = NewWeapon;
+}
+*/

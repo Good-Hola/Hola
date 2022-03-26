@@ -4,6 +4,7 @@
 #include "InteractObject.h"
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "../Character/PlayerCharacter.h"
 
 // Sets default values
 AInteractObject::AInteractObject()
@@ -18,6 +19,7 @@ AInteractObject::AInteractObject()
 	check(mesh);
 	mesh->SetupAttachment(scene);
 	mesh->SetCollisionObjectType(ECC_GameTraceChannel1);
+	mesh->SetCollisionProfileName(TEXT("HolaObject"));
 
 	widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	check(widget);
@@ -33,27 +35,37 @@ void AInteractObject::BeginPlay()
 	isAct = false;
 }
 
-// Called every frame
-void AInteractObject::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 int AInteractObject::GetNeedEnergy()
 {
 	return needEnergy;
 }
 
 
-void AInteractObject::Interact_Implementation()
+void AInteractObject::Interact(APlayerCharacter* character)
 {
-	if (needEnergy > 0)
+	UE_LOG(LogTemp, Log, TEXT("is act : %d"), isAct);
+	if (!isAct)
+		TurnOn(character);
+	else
+		TurnOff(character);
+}
+
+void AInteractObject::TurnOn_Implementation(APlayerCharacter* character)
+{
+	if (character->GetEnergy() >= needEnergy)
 	{
 		isAct = !isAct;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("interact : %d"));
-		UE_LOG(LogTemp, Log, TEXT("energy : %d"), needEnergy);
+		UE_LOG(LogTemp, Log, TEXT("Enough Energy"));
 	}
+	else
+		UE_LOG(LogTemp, Log, TEXT("Not Enough Energy"));
+	UE_LOG(LogTemp, Log, TEXT("Turn On"));
+}
+
+void AInteractObject::TurnOff_Implementation(APlayerCharacter* character)
+{
+	isAct = !isAct;
+	UE_LOG(LogTemp, Log, TEXT("Turn Off"));
 }
 
 void AInteractObject::SetWidgetStatus(bool status)

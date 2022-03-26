@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "InteractObject.generated.h"
 
-UCLASS()
+UCLASS(abstract)
 class HOLA_API AInteractObject : public AActor
 {
 	GENERATED_BODY()
@@ -32,20 +32,27 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
 		class USoundBase* interactionSound;
 
+protected:
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 		class UStaticMeshComponent* mesh;
 
 	UPROPERTY(EditInstanceOnly)
 		class UWidgetComponent* widget;
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintGetter, Category = "Energy")
 		int GetNeedEnergy();
 
+	void Interact(class APlayerCharacter* character);
+
 	UFUNCTION(BlueprintNativeEvent)
-		void Interact();
+		void TurnOn(class APlayerCharacter* character);
+	virtual void TurnOn_Implementation(class APlayerCharacter* character);
+
+	UFUNCTION(BlueprintNativeEvent)
+		void TurnOff(class APlayerCharacter* character);
+	virtual void TurnOff_Implementation(class APlayerCharacter* character);
 
 	virtual void SetWidgetStatus(bool status);
 };

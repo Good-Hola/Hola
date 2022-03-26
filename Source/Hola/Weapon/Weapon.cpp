@@ -5,30 +5,39 @@
 
 AWeapon::AWeapon()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+
+	scene = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	check(scene);
+	RootComponent = scene;
 
 	weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
+	check(weapon);
 	weapon->SetupAttachment(RootComponent);
-	weapon->SetCollisionProfileName(TEXT("NoCollision"));
+	weapon->SetCollisionProfileName(TEXT("HolaWeapon"));
 
-}
-
-void AWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void AWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-}
-
-void AWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
 }
 
 int AWeapon::GetDamage()
-{								
+{
 	return damage;
 }
 
+EWeaponType AWeapon::GetWeaponType()
+{
+	return weaponType;
+}
+
+FString AWeapon::GetHoldSocketName()
+{
+	return weaponHoldSocketName;
+}
+
+FString AWeapon::GetBackSocketName()
+{
+	return weaponBackSocketName;
+}
+
+void AWeapon::Attack()
+{
+}

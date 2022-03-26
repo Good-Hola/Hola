@@ -11,16 +11,22 @@ class HOLA_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+		UPROPERTY(BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
+		float health;
+
+	UPROPERTY(BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
+		float energy;
+
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+		class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
+		class UCameraComponent* FollowCamera;
 
 	UPROPERTY(VisibleAnywhere, Category = "TriggerCapsule")
-	class UCapsuleComponent* TriggerCapsule;
+		class UCapsuleComponent* TriggerCapsule;
 
 public:
 	// Sets default values for this character's properties
@@ -28,17 +34,19 @@ public:
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-	float BaseTurnRate;
+		float BaseTurnRate;
 
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-	float BaseLookUpRate;
+		float BaseLookUpRate;
 
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
 	//bool isCrouching;
 
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
-		class ATestWeapon* currentWeapon;
+	UPROPERTY()
+		TArray<class AWeapon*> weapon;
+
+	int currentWeaponIndex;
 
 protected:
 	/** Called for forwards/backward input */
@@ -81,15 +89,29 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	UFUNCTION()
-	void OnTriggerBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, 
-		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+		void OnTriggerBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+			class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void OnTriggerEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
-		class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+		void OnTriggerEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
+			class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	bool CanSetWeapon();
-	void SetWeapon(class ATestWeapon* NewWeapon);
+	void SetWeapon(class AWeapon* newWeapon);
+
+	UFUNCTION(BlueprintGetter, Category = Stat)
+		float GetHealth();
+
+	UFUNCTION(BlueprintGetter, Category = Stat)
+		float GetEnergy();
+
+	UFUNCTION(BlueprintSetter, Category = Stat)
+		void SetHealth(float hp);
+
+	UFUNCTION(BlueprintSetter, Category = Stat)
+		void SetEnergy(float en);
+
+	void SetWeapon();
 
 private:
 
