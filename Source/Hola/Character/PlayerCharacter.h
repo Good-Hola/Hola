@@ -4,17 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "../Utils/HolaTypes.h"
 #include "PlayerCharacter.generated.h"
+
+DECLARE_DELEGATE_OneParam(FSwapWeaponDelegate, EWeaponType);
+
 
 UCLASS()
 class HOLA_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-		UPROPERTY(BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
+private:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
 		float health;
 
-	UPROPERTY(BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
 		float energy;
 
 	/** Camera boom positioning the camera behind the character */
@@ -27,6 +33,17 @@ class HOLA_API APlayerCharacter : public ACharacter
 
 	UPROPERTY(VisibleAnywhere, Category = "TriggerCapsule")
 		class UCapsuleComponent* TriggerCapsule;
+
+	class AInteractObject* focusedActor;
+
+	UPROPERTY(BlueprintGetter = GetPlayerAnimInstance, Category = Instance)
+	class UPlayerAnimInstance* animInstance;
+
+	UPROPERTY()
+		TArray<class AWeapon*> weapon;
+
+	UPROPERTY(BlueprintGetter = GetCurrentWeapon, BlueprintSetter = SetCurrentWeapon, Category = Stat)
+		EWeaponType currentWeaponIndex;
 
 public:
 	// Sets default values for this character's properties
@@ -41,12 +58,9 @@ public:
 		float BaseLookUpRate;
 
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera)
-	//bool isCrouching;
+	//bool isCrouching
 
-	UPROPERTY()
-		TArray<class AWeapon*> weapon;
-
-	int currentWeaponIndex;
+	FSwapWeaponDelegate SwapWeaponDelegate;
 
 protected:
 	/** Called for forwards/backward input */
@@ -77,7 +91,11 @@ protected:
 
 	virtual	void BeginPlay() override;
 
-	class AInteractObject* focusedActor;
+	virtual void PostInitializeComponents() override;
+
+
+	UFUNCTION()
+		void SwapWeapon(EWeaponType type);
 
 
 public:
@@ -96,7 +114,6 @@ public:
 		void OnTriggerEndOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
 			class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	bool CanSetWeapon();
 	void SetWeapon(class AWeapon* newWeapon);
 
 	UFUNCTION(BlueprintGetter, Category = Stat)
@@ -111,7 +128,16 @@ public:
 	UFUNCTION(BlueprintSetter, Category = Stat)
 		void SetEnergy(float en);
 
-	void SetWeapon();
+	UFUNCTION(BlueprintGetter, Category = Stat)
+		EWeaponType GetCurrentWeapon();
+
+	UFUNCTION(BlueprintSetter, Category = Stat)
+		void SetCurrentWeapon(EWeaponType type);
+
+	UFUNCTION(BlueprintGetter, Category = Instance)
+		class UPlayerAnimInstance* GetPlayerAnimInstance();
+
+
 
 private:
 

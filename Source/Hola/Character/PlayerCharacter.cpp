@@ -10,6 +10,7 @@
 #include "../InteractObject/InteractObject.h"
 #include "../InteractObject/InteractWeapon.h"
 #include "../Weapon/Weapon.h"
+#include "PlayerAnimInstance.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -60,8 +61,6 @@ APlayerCharacter::APlayerCharacter()
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 
-
-	weapon.Init(nullptr, 2);
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -84,11 +83,52 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
+	PlayerInputComponent->BindAction<FSwapWeaponDelegate>("GripSword", IE_Pressed, this, &APlayerCharacter::SwapWeapon, EWeaponType::MELEE);
+	PlayerInputComponent->BindAction<FSwapWeaponDelegate>("GripGun", IE_Pressed, this, &APlayerCharacter::SwapWeapon, EWeaponType::RANGED);
 }
 
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void APlayerCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	animInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+	SetCurrentWeapon(EWeaponType::MAX_COUNT);
+	animInstance->SetCurrentWeaponType(EWeaponType::MAX_COUNT);
+	SwapWeaponDelegate.BindUFunction(this, "SwapWeapon");
+
+	weapon.Init(nullptr, 2);
+}
+
+void APlayerCharacter::SwapWeapon(EWeaponType type)
+{
+	if (weapon[(int)type] == nullptr)
+		return;
+
+	FName WeaponSocket;
+	if (currentWeaponIndex == type)
+	{
+		WeaponSocket = FName(*(weapon[(int)type]->GetBackSocketName()));
+		weapon[(int)type]->AttachToComponent(GetMesh(),
+			FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		SetCurrentWeapon(EWeaponType::MAX_COUNT);
+	}
+	else if (currentWeaponIndex != type)
+	{
+		if (((int)type + 1) % (int)EWeaponType::MAX_COUNT == (int)currentWeaponIndex)
+		{
+			WeaponSocket = FName(*(weapon[(int)currentWeaponIndex])->GetBackSocketName());
+			weapon[(int)currentWeaponIndex]->AttachToComponent(GetMesh(),
+				FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		}
+		WeaponSocket = FName(*(weapon[(int)type]->GetHoldSocketName()));
+		weapon[(int)type]->AttachToComponent(GetMesh(),
+			FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		SetCurrentWeapon(type);
+	}
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -104,8 +144,6 @@ void APlayerCharacter::DetectObject()
 
 	if (OverlappingActors.Num() == 0)
 		return;
-	UE_LOG(LogTemp, Log, TEXT("nums : %d"), OverlappingActors.Num());
-
 	AActor* Closest = OverlappingActors[0];
 	for (auto CurrentActor : OverlappingActors)
 	{
@@ -215,6 +253,22 @@ void APlayerCharacter::SetEnergy(float en)
 	energy = en;
 }
 
+EWeaponType APlayerCharacter::GetCurrentWeapon()
+{
+	return currentWeaponIndex;
+}
+
+void APlayerCharacter::SetCurrentWeapon(EWeaponType type)
+{
+	currentWeaponIndex = type;
+	animInstance->SetCurrentWeaponType(type);
+}
+
+UPlayerAnimInstance* APlayerCharacter::GetPlayerAnimInstance()
+{
+	return animInstance;
+}
+
 void APlayerCharacter::OnInteract()
 {
 	if (focusedActor)
@@ -223,54 +277,23 @@ void APlayerCharacter::OnInteract()
 	}
 }
 
-bool APlayerCharacter::CanSetWeapon()
-{
-	return nullptr;
-}
-
 void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
 {
 	if (newWeapon)
 	{
 		FName WeaponSocket;
-		if (newWeapon->GetWeaponType() == EWeaponType::MELEE)
+		if (currentWeaponIndex != EWeaponType::MAX_COUNT && currentWeaponIndex != newWeapon->GetWeaponType())
 		{
-			if (currentWeaponIndex == 0)
-				WeaponSocket = FName(*(newWeapon->GetHoldSocketName()));
-			else if (currentWeaponIndex == 1)
-				WeaponSocket = FName(*(newWeapon->GetBackSocketName()));
-			newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-			newWeapon->SetOwner(this);
-			if (weapon[0])
-				weapon[0]->Destroy();
-			weapon[0] = newWeapon;
+			WeaponSocket = FName(*(weapon[(int)currentWeaponIndex]->GetBackSocketName()));
+			weapon[(int)currentWeaponIndex]->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		}
-		else if (newWeapon->GetWeaponType() == EWeaponType::RANGED)
-		{
-			if (currentWeaponIndex == 1)
-				WeaponSocket = FName(*(newWeapon->GetHoldSocketName()));
-			else if (currentWeaponIndex == 0)
-				WeaponSocket = FName(*(newWeapon->GetBackSocketName()));
-			newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-			newWeapon->SetOwner(this);
-			if (weapon[1])
-				weapon[1]->Destroy();
-			weapon[1] = newWeapon;
-		}
+		SetCurrentWeapon(newWeapon->GetWeaponType());
+		WeaponSocket = FName(*(newWeapon->GetHoldSocketName()));
+		newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		newWeapon->SetOwner(this);
+		if (weapon[(int)currentWeaponIndex])
+			weapon[(int)currentWeaponIndex]->Destroy();
+		weapon[(int)currentWeaponIndex] = newWeapon;
+		UE_LOG(LogTemp, Warning, TEXT("current weapon : %d"), currentWeaponIndex);
 	}
 }
-
-
-
-/*
-if (nullptr != NewWeapon && nullptr == currentWeapon)
-	UE_LOG(LogTemp, Log, TEXT("Can't equip weapon"));
-FName WeaponSocket(TEXT("hand_rSocket"));
-if (NewWeapon != nullptr)
-{
-	NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-	NewWeapon->SetOwner(this);
-	NewWeapon->AddActorLocalRotation(FQuat(0.f, 0.f, 0.f, 93.f));
-	currentWeapon = NewWeapon;
-}
-*/
