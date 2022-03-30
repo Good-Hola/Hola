@@ -33,6 +33,9 @@ class HOLA_API AWeapon : public AActor
 	UPROPERTY(EditDefaultsOnly, Category = weapon)
 		EWeaponType weaponType;
 
+	UPROPERTY(EditDefaultsOnly, Category = anim)
+		UAnimMontage* GripAnimMontage;
+
 public:
 	AWeapon();
 
@@ -48,6 +51,9 @@ public:
 
 	UFUNCTION(BlueprintGetter, Category = weapon)
 		FString GetBackSocketName();
+
+	UFUNCTION(BlueprintGetter, Category = anim)
+		UAnimMontage* GetGripAnimMontage();
 
 	UFUNCTION()
 		virtual void Attack();

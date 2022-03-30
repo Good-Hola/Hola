@@ -38,6 +38,11 @@ FString AWeapon::GetBackSocketName()
 	return weaponBackSocketName;
 }
 
+UAnimMontage* AWeapon::GetGripAnimMontage()
+{
+	return GripAnimMontage;
+}
+
 void AWeapon::Attack()
 {
 }

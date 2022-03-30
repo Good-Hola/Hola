@@ -127,6 +127,9 @@ void APlayerCharacter::SwapWeapon(EWeaponType type)
 		WeaponSocket = FName(*(weapon[(int)type]->GetHoldSocketName()));
 		weapon[(int)type]->AttachToComponent(GetMesh(),
 			FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		check(weapon[(int)type]->GetGripAnimMontage());
+		animInstance->Montage_Play(weapon[(int)type]->GetGripAnimMontage());
+		animInstance->Montage_JumpToSection(FName("GripGun"), weapon[(int)type]->GetGripAnimMontage());
 		SetCurrentWeapon(type);
 	}
 }
