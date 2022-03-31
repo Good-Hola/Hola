@@ -93,9 +93,10 @@ protected:
 
 	virtual void PostInitializeComponents() override;
 
-
 	UFUNCTION()
 		void SwapWeapon(EWeaponType type);
+
+	void Attack();
 
 
 public:
@@ -136,8 +137,6 @@ public:
 
 	UFUNCTION(BlueprintGetter, Category = Instance)
 		class UPlayerAnimInstance* GetPlayerAnimInstance();
-
-
 
 private:
 

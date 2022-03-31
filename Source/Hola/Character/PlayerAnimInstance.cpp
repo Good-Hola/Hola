@@ -5,7 +5,7 @@
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {
-
+	
 }
 
 void UPlayerAnimInstance::NativeBeginPlay()

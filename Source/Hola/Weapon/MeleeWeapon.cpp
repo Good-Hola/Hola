@@ -7,3 +7,9 @@ AMeleeWeapon::AMeleeWeapon()
 	hitBox->SetupAttachment(RootComponent);
 	hitBox->SetCollisionProfileName(TEXT("HolaWeapon"));
 }
+
+void AMeleeWeapon::Attack()
+{
+	Super::Attack();
+	UE_LOG(LogTemp, Warning, TEXT("in melee weapon"));
+}

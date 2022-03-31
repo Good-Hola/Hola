@@ -83,8 +83,10 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
-	PlayerInputComponent->BindAction<FSwapWeaponDelegate>("GripSword", IE_Pressed, this, &APlayerCharacter::SwapWeapon, EWeaponType::MELEE);
+	PlayerInputComponent->BindAction<FSwapWeaponDelegate>("GripSword", IE_Pressed,
+		this, &APlayerCharacter::SwapWeapon, EWeaponType::MELEE);
 	PlayerInputComponent->BindAction<FSwapWeaponDelegate>("GripGun", IE_Pressed, this, &APlayerCharacter::SwapWeapon, EWeaponType::RANGED);
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APlayerCharacter::Attack);
 }
 
 void APlayerCharacter::BeginPlay()
@@ -112,6 +114,11 @@ void APlayerCharacter::SwapWeapon(EWeaponType type)
 	if (currentWeaponIndex == type)
 	{
 		WeaponSocket = FName(*(weapon[(int)type]->GetBackSocketName()));
+		// grip 애니메이션을 실행
+		// 현재 문제점 : 애니메이션 실행과 동시에 소켓 연결이 일어나서 
+		//				넣는 동안 손에 들고있어야하는데 바로 등으로 붙어버림
+		// 델리게이트로 애니메이션 끝나고 실행하려면 type 변수와 WeaponSocket 변수를 넘겨줘야
+		// 하는데 자체 델리게이트로는 변수 전달이 불가능
 		weapon[(int)type]->AttachToComponent(GetMesh(),
 			FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		SetCurrentWeapon(EWeaponType::MAX_COUNT);
@@ -127,10 +134,18 @@ void APlayerCharacter::SwapWeapon(EWeaponType type)
 		WeaponSocket = FName(*(weapon[(int)type]->GetHoldSocketName()));
 		weapon[(int)type]->AttachToComponent(GetMesh(),
 			FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-		check(weapon[(int)type]->GetGripAnimMontage());
 		animInstance->Montage_Play(weapon[(int)type]->GetGripAnimMontage());
-		animInstance->Montage_JumpToSection(FName("GripGun"), weapon[(int)type]->GetGripAnimMontage());
+		animInstance->Montage_JumpToSection(FName(*(weapon[(int)type])->GetGripAnimSectionName()),
+			weapon[(int)type]->GetGripAnimMontage());
 		SetCurrentWeapon(type);
+	}
+}
+
+void APlayerCharacter::Attack()
+{
+	if (currentWeaponIndex < EWeaponType::MAX_COUNT && weapon[(int)currentWeaponIndex])
+	{
+		weapon[(int)currentWeaponIndex]->Attack();
 	}
 }
 

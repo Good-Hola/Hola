@@ -43,6 +43,16 @@ UAnimMontage* AWeapon::GetGripAnimMontage()
 	return GripAnimMontage;
 }
 
+FString AWeapon::GetGripAnimSectionName()
+{
+	return GripAnimSectionName;
+}
+
+FString AWeapon::GetUnGripAnimSectionName()
+{
+	return UnGripAnimSectionName;
+}
+
 void AWeapon::Attack()
 {
 }
