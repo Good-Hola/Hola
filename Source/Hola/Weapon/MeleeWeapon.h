@@ -12,11 +12,15 @@ class HOLA_API AMeleeWeapon : public AWeapon
 {
 	GENERATED_BODY()
 
-		UPROPERTY(VisibleAnywhere, Category = "Collision")
+	UPROPERTY(VisibleAnywhere, Category = "Collision")
 		class UCapsuleComponent* hitBox;
+
+
 
 public:
 	AMeleeWeapon();
+
+	virtual void Attack() override;
 
 protected:
 
