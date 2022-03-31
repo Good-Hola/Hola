@@ -87,6 +87,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 		this, &APlayerCharacter::SwapWeapon, EWeaponType::MELEE);
 	PlayerInputComponent->BindAction<FSwapWeaponDelegate>("GripGun", IE_Pressed, this, &APlayerCharacter::SwapWeapon, EWeaponType::RANGED);
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APlayerCharacter::Attack);
+	PlayerInputComponent->BindAction("DropWeapon", IE_Pressed, this, &APlayerCharacter::DropWeapon);
 }
 
 void APlayerCharacter::BeginPlay()
@@ -146,6 +147,18 @@ void APlayerCharacter::Attack()
 	if (currentWeaponIndex < EWeaponType::MAX_COUNT && weapon[(int)currentWeaponIndex])
 	{
 		weapon[(int)currentWeaponIndex]->Attack();
+	}
+}
+
+void APlayerCharacter::DropWeapon()
+{
+	if (currentWeaponIndex != EWeaponType::MAX_COUNT && weapon[(int)currentWeaponIndex])
+	{
+		weapon[(int)currentWeaponIndex]->SpawnInteractWeapon(this);
+		//if (weapon[(int)currentWeaponIndex + 1 % (int)EWeaponType::MAX_COUNT])
+			//SetCurrentWeapon()
+		weapon[(int)currentWeaponIndex] = nullptr;
+		SetCurrentWeapon(EWeaponType::MAX_COUNT);
 	}
 }
 
@@ -310,8 +323,7 @@ void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
 		newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		newWeapon->SetOwner(this);
 		if (weapon[(int)currentWeaponIndex])
-			weapon[(int)currentWeaponIndex]->Destroy();
+			weapon[(int)currentWeaponIndex]->SpawnInteractWeapon(this);
 		weapon[(int)currentWeaponIndex] = newWeapon;
-		UE_LOG(LogTemp, Warning, TEXT("current weapon : %d"), currentWeaponIndex);
 	}
 }

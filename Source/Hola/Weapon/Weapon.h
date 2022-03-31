@@ -70,5 +70,8 @@ public:
 	UFUNCTION()
 		virtual void Attack();
 
+	UFUNCTION()
+		void SpawnInteractWeapon(class APlayerCharacter *character);
+
 
 };

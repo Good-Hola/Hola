@@ -72,3 +72,8 @@ void AInteractObject::SetWidgetStatus(bool status)
 {
 	widget->SetVisibility(status);
 }
+
+UStaticMeshComponent* AInteractObject::GetMesh()
+{
+	return mesh;
+}

@@ -8,7 +8,8 @@
 AInteractWeapon::AInteractWeapon()
 {
 	mesh->SetCollisionObjectType(ECC_GameTraceChannel5);
-	mesh->SetCollisionProfileName(TEXT("HolaObject"));
+	mesh->SetCollisionProfileName(TEXT("HolaWeapon"));
+	mesh->SetSimulatePhysics(true);
 }
 
 void AInteractWeapon::TurnOn_Implementation(APlayerCharacter* character)

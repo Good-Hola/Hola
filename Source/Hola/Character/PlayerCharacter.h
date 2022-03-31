@@ -98,6 +98,8 @@ protected:
 
 	void Attack();
 
+	void DropWeapon();
+
 
 public:
 	/** Returns CameraBoom subobject **/

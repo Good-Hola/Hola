@@ -55,4 +55,7 @@ public:
 	virtual void TurnOff_Implementation(class APlayerCharacter* character);
 
 	virtual void SetWidgetStatus(bool status);
+
+	UFUNCTION()
+	class UStaticMeshComponent* GetMesh();
 };
