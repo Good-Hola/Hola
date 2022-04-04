@@ -274,9 +274,35 @@ float APlayerCharacter::GetEnergy()
 	return energy;
 }
 
+float APlayerCharacter::GetMaxHealth()
+{
+	return max_hp;
+}
+
+float APlayerCharacter::GetMaxEnergy()
+{
+	return max_energy;
+}
+
 void APlayerCharacter::SetHealth(float hp)
 {
 	health = hp;
+}
+
+void APlayerCharacter::Death_Implementation()
+{
+	UE_LOG(LogTemp, Warning, TEXT("character is dead"));
+}
+
+float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float damage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	health -= damage;
+	if (health > max_hp)
+		health = max_hp;
+	if (health <= 0)
+		Death();
+	return damage;
 }
 
 void APlayerCharacter::SetEnergy(float en)
