@@ -14,7 +14,7 @@ AProjectile::AProjectile()
 
 	projHitBox = CreateDefaultSubobject<USphereComponent>(TEXT("HitBox"));
 	projHitBox->InitSphereRadius(10.0f);
-	projHitBox->BodyInstance.SetCollisionProfileName("BlockAll");
+	projHitBox->BodyInstance.SetCollisionProfileName("HolaProjectile");
 	projHitBox->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
 	OnDestroyed.AddDynamic(this, &AProjectile::OnDestroyedProjectile);
@@ -43,10 +43,20 @@ AProjectile::AProjectile()
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (!OtherActor->GetClass()->IsChildOf(this->StaticClass()))
+	{
+		projHitBox->SetCollisionProfileName(TEXT("NoCollision"));
+		projHitBox->SetGenerateOverlapEvents(false);
+		projMesh->SetVisibility(false);
+
+		projParticle->Activate();
+		projParticle->DetachFromParent(true);
+	}
 }
 
 void AProjectile::OnDestroyedProjectile(AActor* DestroyedActor)
 {
+	UE_LOG(LogTemp, Warning, TEXT("projectile destroyed"));
 }
 
 // Called when the game starts or when spawned

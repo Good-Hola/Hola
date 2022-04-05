@@ -9,7 +9,6 @@
 // Sets default values
 AInteractObject::AInteractObject()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	scene = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
@@ -21,17 +20,18 @@ AInteractObject::AInteractObject()
 	mesh->SetCollisionObjectType(ECC_GameTraceChannel1);
 	mesh->SetCollisionProfileName(TEXT("HolaObject"));
 
+	/*
 	widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	check(widget);
 	widget->SetupAttachment(RootComponent);
-
+	*/
 }
 
 // Called when the game starts or when spawned
 void AInteractObject::BeginPlay()
 {
 	Super::BeginPlay();
-	widget->SetVisibility(false);
+	//widget->SetVisibility(false);
 	isAct = false;
 }
 
@@ -68,7 +68,7 @@ void AInteractObject::TurnOff_Implementation(APlayerCharacter* character)
 	UE_LOG(LogTemp, Log, TEXT("Turn Off"));
 }
 
-void AInteractObject::SetWidgetStatus(bool status)
+UStaticMeshComponent* AInteractObject::GetMesh()
 {
-	widget->SetVisibility(status);
+	return mesh;
 }

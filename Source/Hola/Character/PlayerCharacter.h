@@ -17,6 +17,12 @@ class HOLA_API APlayerCharacter : public ACharacter
 
 private:
 
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetMaxHealth, BlueprintSetter = SetHealth, Category = Stat)
+		float max_hp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetMaxEnergy, Category = Stat)
+		float max_energy;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
 		float health;
 
@@ -62,6 +68,10 @@ public:
 
 	FSwapWeaponDelegate SwapWeaponDelegate;
 
+	UFUNCTION(BlueprintNativeEvent)
+		void Death();
+	virtual void Death_Implementation();
+
 protected:
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
@@ -98,6 +108,8 @@ protected:
 
 	void Attack();
 
+	void DropWeapon();
+
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -123,8 +135,16 @@ public:
 	UFUNCTION(BlueprintGetter, Category = Stat)
 		float GetEnergy();
 
+	UFUNCTION(BlueprintGetter, Category = Stat)
+		float GetMaxHealth();
+
+	UFUNCTION(BlueprintGetter, Category = Stat)
+		float GetMaxEnergy();
+
 	UFUNCTION(BlueprintSetter, Category = Stat)
 		void SetHealth(float hp);
+
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintSetter, Category = Stat)
 		void SetEnergy(float en);
