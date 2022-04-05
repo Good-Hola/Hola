@@ -14,14 +14,15 @@ class HOLA_API AProjectile : public AActor
 		UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 		class USphereComponent* projHitBox;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Projectile, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Projectile, meta = (AllowPrivateAccess = "true"))
 		class UParticleSystemComponent* projParticle;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Projectile, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Projectile, meta = (AllowPrivateAccess = "true"))
 		class UStaticMeshComponent* projMesh;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Projectile, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Projectile, meta = (AllowPrivateAccess = "true"))
 		class UProjectileMovementComponent* projMovement;
+
 
 public:
 	// Sets default values for this actor's properties

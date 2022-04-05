@@ -2,6 +2,8 @@
 
 
 #include "Weapon.h"
+#include "../InteractObject/InteractWeapon.h"
+#include "../Character/PlayerCharacter.h"
 
 AWeapon::AWeapon()
 {
@@ -55,4 +57,15 @@ FString AWeapon::GetUnGripAnimSectionName()
 
 void AWeapon::Attack()
 {
+}
+
+void AWeapon::SpawnInteractWeapon(APlayerCharacter* character)
+{
+	if (character && weapon && GetWorld())
+	{
+		AInteractWeapon* newWeapon = GetWorld()->SpawnActor<AInteractWeapon>(spawnWeapon,
+			character->GetActorLocation(), character->GetActorRotation());
+		newWeapon->GetMesh()->AddForce(character->GetActorRotation().Vector() * 300000);
+		Destroy();
+	}
 }

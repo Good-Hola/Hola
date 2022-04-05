@@ -37,8 +37,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 		class UStaticMeshComponent* mesh;
 
+	/*
 	UPROPERTY(EditInstanceOnly)
 		class UWidgetComponent* widget;
+	*/
 public:
 
 	UFUNCTION(BlueprintGetter, Category = "Energy")
@@ -54,5 +56,6 @@ public:
 		void TurnOff(class APlayerCharacter* character);
 	virtual void TurnOff_Implementation(class APlayerCharacter* character);
 
-	virtual void SetWidgetStatus(bool status);
+	UFUNCTION()
+	class UStaticMeshComponent* GetMesh();
 };
