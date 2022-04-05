@@ -12,7 +12,7 @@ class HOLA_API AWeapon : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetDamage, Category = weapon)
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetDamage, Category = weapon)
 		int damage;
 
 	UPROPERTY(VisibleAnywhere, Category = Scene)

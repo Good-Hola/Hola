@@ -2,15 +2,24 @@
 
 
 #include "RangedWeapon.h"
+#include "Projectile.h"
 
 ARangedWeapon::ARangedWeapon()
 {
-
+	projSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("ProjtileSpawn"));
+	projSpawn->SetupAttachment(RootComponent);
 }
 
 void ARangedWeapon::Attack()
 {
 	Super::Attack();
-	UE_LOG(LogTemp, Warning, TEXT("in ranged weapon"));
+	if (projectile)
+	{
+		if (GetWorld())
+		{
+			GetWorld()->SpawnActor<AProjectile>(projectile,
+				projSpawn->GetComponentLocation(), projSpawn->GetComponentRotation());
+		}
+	}
 
 }
