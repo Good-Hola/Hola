@@ -87,6 +87,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 		this, &APlayerCharacter::SwapWeapon, EWeaponType::MELEE);
 	PlayerInputComponent->BindAction<FSwapWeaponDelegate>("GripGun", IE_Pressed, this, &APlayerCharacter::SwapWeapon, EWeaponType::RANGED);
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APlayerCharacter::Attack);
+	PlayerInputComponent->BindAction("DropWeapon", IE_Pressed, this, &APlayerCharacter::DropWeapon);
 }
 
 void APlayerCharacter::BeginPlay()
@@ -149,6 +150,18 @@ void APlayerCharacter::Attack()
 	}
 }
 
+void APlayerCharacter::DropWeapon()
+{
+	if (currentWeaponIndex != EWeaponType::MAX_COUNT && weapon[(int)currentWeaponIndex])
+	{
+		weapon[(int)currentWeaponIndex]->SpawnInteractWeapon(this);
+		//if (weapon[(int)currentWeaponIndex + 1 % (int)EWeaponType::MAX_COUNT])
+			//SetCurrentWeapon()
+		weapon[(int)currentWeaponIndex] = nullptr;
+		SetCurrentWeapon(EWeaponType::MAX_COUNT);
+	}
+}
+
 void APlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -167,13 +180,11 @@ void APlayerCharacter::DetectObject()
 	{
 		if (GetDistanceTo(CurrentActor) < GetDistanceTo(Closest))
 		{
-			Cast<AInteractObject>(Closest)->SetWidgetStatus(false);
 			Closest = CurrentActor;
 		}
 	}
 
 	focusedActor = Cast<AInteractObject>(Closest);
-	focusedActor->SetWidgetStatus(true);
 
 }
 
@@ -190,7 +201,6 @@ void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, 
 	AInteractObject* obj = Cast<AInteractObject>(OtherActor);
 	if (obj && obj == focusedActor)
 	{
-		obj->SetWidgetStatus(false);
 		focusedActor = nullptr;
 		DetectObject();
 	}
@@ -261,9 +271,35 @@ float APlayerCharacter::GetEnergy()
 	return energy;
 }
 
+float APlayerCharacter::GetMaxHealth()
+{
+	return max_hp;
+}
+
+float APlayerCharacter::GetMaxEnergy()
+{
+	return max_energy;
+}
+
 void APlayerCharacter::SetHealth(float hp)
 {
 	health = hp;
+}
+
+void APlayerCharacter::Death_Implementation()
+{
+	UE_LOG(LogTemp, Warning, TEXT("character is dead"));
+}
+
+float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float damage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	health -= damage;
+	if (health > max_hp)
+		health = max_hp;
+	if (health <= 0)
+		Death();
+	return damage;
 }
 
 void APlayerCharacter::SetEnergy(float en)
@@ -310,8 +346,7 @@ void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
 		newWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		newWeapon->SetOwner(this);
 		if (weapon[(int)currentWeaponIndex])
-			weapon[(int)currentWeaponIndex]->Destroy();
+			weapon[(int)currentWeaponIndex]->SpawnInteractWeapon(this);
 		weapon[(int)currentWeaponIndex] = newWeapon;
-		UE_LOG(LogTemp, Warning, TEXT("current weapon : %d"), currentWeaponIndex);
 	}
 }
