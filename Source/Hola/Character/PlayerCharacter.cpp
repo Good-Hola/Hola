@@ -180,13 +180,11 @@ void APlayerCharacter::DetectObject()
 	{
 		if (GetDistanceTo(CurrentActor) < GetDistanceTo(Closest))
 		{
-			Cast<AInteractObject>(Closest)->SetWidgetStatus(false);
 			Closest = CurrentActor;
 		}
 	}
 
 	focusedActor = Cast<AInteractObject>(Closest);
-	focusedActor->SetWidgetStatus(true);
 
 }
 
@@ -203,7 +201,6 @@ void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, 
 	AInteractObject* obj = Cast<AInteractObject>(OtherActor);
 	if (obj && obj == focusedActor)
 	{
-		obj->SetWidgetStatus(false);
 		focusedActor = nullptr;
 		DetectObject();
 	}

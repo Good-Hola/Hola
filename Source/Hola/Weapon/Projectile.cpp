@@ -45,6 +45,12 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 {
 	if (!OtherActor->GetClass()->IsChildOf(this->StaticClass()))
 	{
+		projHitBox->SetCollisionProfileName(TEXT("NoCollision"));
+		projHitBox->SetGenerateOverlapEvents(false);
+		projMesh->SetVisibility(false);
+
+		projParticle->Activate();
+		projParticle->DetachFromParent(true);
 	}
 }
 
