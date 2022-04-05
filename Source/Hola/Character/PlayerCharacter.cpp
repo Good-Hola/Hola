@@ -93,9 +93,6 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	health = max_hp;
-	energy = max_energy;
 }
 
 void APlayerCharacter::PostInitializeComponents()

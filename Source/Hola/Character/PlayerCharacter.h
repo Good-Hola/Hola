@@ -23,10 +23,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetMaxEnergy, Category = Stat)
 		float max_energy;
 
-	UPROPERTY(BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetHealth, BlueprintSetter = SetHealth, Category = Stat)
 		float health;
 
-	UPROPERTY(BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
 		float energy;
 
 	/** Camera boom positioning the camera behind the character */
