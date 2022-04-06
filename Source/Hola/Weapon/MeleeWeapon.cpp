@@ -79,7 +79,11 @@ void AMeleeWeapon::Attack()
 {
 	if (animInstance && attackMontage)
 	{
-		if (isAttacking)
+		if (comboSectionName.Num() == 0)
+		{
+			animInstance->Montage_Play(attackMontage);
+		}
+		else if (isAttacking)
 		{
 			if (canNextCombo)
 				isComboInputOn = true;
