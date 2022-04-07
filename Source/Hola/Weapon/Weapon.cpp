@@ -55,6 +55,11 @@ FString AWeapon::GetUnGripAnimSectionName()
 	return UnGripAnimSectionName;
 }
 
+void AWeapon::SetAnimInstance(UPlayerAnimInstance* instance)
+{
+	animInstance = instance;
+}
+
 void AWeapon::Attack()
 {
 }
@@ -68,4 +73,8 @@ void AWeapon::SpawnInteractWeapon(APlayerCharacter* character)
 		newWeapon->GetMesh()->AddForce(character->GetActorRotation().Vector() * 300000);
 		Destroy();
 	}
+}
+
+void AWeapon::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
 }

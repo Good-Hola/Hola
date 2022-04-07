@@ -93,6 +93,8 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	health = max_hp;
+	energy = max_energy;
 }
 
 void APlayerCharacter::PostInitializeComponents()
@@ -190,7 +192,7 @@ void APlayerCharacter::DetectObject()
 
 void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && (OtherActor != this))
+	if (OtherActor && !OtherActor->GetClass()->IsChildOf(this->StaticClass()))
 	{
 		DetectObject();
 	}
@@ -348,5 +350,6 @@ void APlayerCharacter::SetWeapon(AWeapon* newWeapon)
 		if (weapon[(int)currentWeaponIndex])
 			weapon[(int)currentWeaponIndex]->SpawnInteractWeapon(this);
 		weapon[(int)currentWeaponIndex] = newWeapon;
+		weapon[(int)currentWeaponIndex]->SetAnimInstance(animInstance);
 	}
 }
