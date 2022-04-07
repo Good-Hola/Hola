@@ -291,6 +291,14 @@ void APlayerCharacter::SetHealth(float hp)
 void APlayerCharacter::Death_Implementation()
 {
 	UE_LOG(LogTemp, Warning, TEXT("character is dead"));
+	for (auto& curWeapon : weapon)
+	{
+		if (curWeapon != nullptr)
+		{
+			currentWeaponIndex = curWeapon->GetWeaponType();
+			DropWeapon();
+		}
+	}
 }
 
 float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
