@@ -8,6 +8,17 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	
 }
 
+void UPlayerAnimInstance::AnimNotify_AttackHitCheck()
+{
+	OnAttackHitCheck.Broadcast();
+}
+
+void UPlayerAnimInstance::AnimNotify_NextAttackCheck()
+{
+	OnNextAttackCheck.Broadcast();
+
+}
+
 void UPlayerAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
