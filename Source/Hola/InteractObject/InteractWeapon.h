@@ -14,7 +14,7 @@ class HOLA_API AInteractWeapon : public AInteractObject
 {
 	GENERATED_BODY()
 
-		UPROPERTY(EditDefaultsOnly, Category = Weapon)
+	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 		TSubclassOf<class AWeapon> weapon;
 
 public:

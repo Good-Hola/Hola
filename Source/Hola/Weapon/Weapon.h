@@ -21,7 +21,7 @@ class HOLA_API AWeapon : public AActor
 	UPROPERTY(VisibleAnywhere, Category = weapon)
 		class USkeletalMeshComponent* weapon;
 
-	UPROPERTY(EditDefaultsOnly, Category = weapon)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = weapon, meta = (AllowPrivateAccess = "true"))
 		TSubclassOf<class AInteractWeapon> spawnWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetHoldSocketName, Category = weapon)
@@ -42,10 +42,13 @@ class HOLA_API AWeapon : public AActor
 	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetUnGripAnimSectionName, Category = anim)
 		FString UnGripAnimSectionName;
 
+protected:
+	UPROPERTY()
+		class UPlayerAnimInstance* animInstance;
+
 public:
 	AWeapon();
 
-public:
 	UFUNCTION(BlueprintGetter, Category = weapon)
 		int GetDamage();
 
@@ -68,10 +71,15 @@ public:
 		FString GetUnGripAnimSectionName();
 
 	UFUNCTION()
+		virtual void SetAnimInstance(class UPlayerAnimInstance* instance);
+
+	UFUNCTION()
 		virtual void Attack();
 
 	UFUNCTION()
 		void SpawnInteractWeapon(class APlayerCharacter *character);
 
+	UFUNCTION()
+		virtual void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 };

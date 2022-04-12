@@ -3,6 +3,7 @@
 
 #include "RangedWeapon.h"
 #include "Projectile.h"
+#include "../Character/PlayerCharacter.h"
 
 ARangedWeapon::ARangedWeapon()
 {
@@ -12,7 +13,6 @@ ARangedWeapon::ARangedWeapon()
 
 void ARangedWeapon::Attack()
 {
-	Super::Attack();
 	if (projectile)
 	{
 		if (GetWorld())
