@@ -2,7 +2,7 @@
 
 
 #include "Weapon.h"
-#include "../InteractObject/InteractWeapon.h"
+#include "../Object/InteractWeapon.h"
 #include "../Character/PlayerCharacter.h"
 
 AWeapon::AWeapon()
