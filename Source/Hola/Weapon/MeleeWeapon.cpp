@@ -40,7 +40,6 @@ void AMeleeWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	{
 		FHitResult hitResult(ForceInit);
 
-		UE_LOG(LogTemp, Warning, TEXT("overlap actor"));
 		if (OtherActor->GetClass()->IsChildOf(ADestructibleObject::StaticClass()))
 		{
 			ADestructibleObject* desObj = Cast<ADestructibleObject>(OtherActor);
@@ -48,6 +47,11 @@ void AMeleeWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			damageEvent.HitInfo = hitResult;
 			desObj->TakeDamage(damage, damageEvent,
 				GetOwner()->GetInstigatorController(), this);
+		}
+		if (OtherActor->ActorHasTag(TEXT("AI")))
+		{
+			UGameplayStatics::ApplyDamage(OtherActor, damage,
+				GetOwner()->GetInstigatorController(), this, NULL);
 		}
 		// 공격을 한번 입이면 그 다음 공격은 안먹히도록 설정
 		canHit = false;
