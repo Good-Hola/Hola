@@ -12,6 +12,9 @@ class HOLA_API AWeapon : public AActor
 {
 	GENERATED_BODY()
 
+
+protected:
+
 	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetDamage, Category = weapon)
 		int damage;
 
@@ -42,7 +45,6 @@ class HOLA_API AWeapon : public AActor
 	UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetUnGripAnimSectionName, Category = anim)
 		FString UnGripAnimSectionName;
 
-protected:
 	UPROPERTY()
 		class UPlayerAnimInstance* animInstance;
 
