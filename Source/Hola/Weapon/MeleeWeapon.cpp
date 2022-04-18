@@ -1,7 +1,9 @@
 #include "MeleeWeapon.h"
 #include "../Character/PlayerAnimInstance.h"
 #include "../Character/PlayerCharacter.h"
-#include "../InteractObject/InteractObject.h"
+#include "../Object/InteractObject.h"
+#include "Kismet/GameplayStatics.h"
+#include "../Object/DestructibleObject.h"
 #include "Components/CapsuleComponent.h"
 
 AMeleeWeapon::AMeleeWeapon()
@@ -9,8 +11,6 @@ AMeleeWeapon::AMeleeWeapon()
 	hitBox = CreateDefaultSubobject<UCapsuleComponent>(TEXT("HitBox"));
 	hitBox->SetupAttachment(RootComponent);
 	hitBox->SetCollisionProfileName(TEXT("HolaWeapon"));
-
-	hitBox->OnComponentBeginOverlap.AddDynamic(this, &AMeleeWeapon::OnBeginOverlap);
 
 	isAttacking = false;
 	currentCombo = 0;
@@ -20,6 +20,9 @@ AMeleeWeapon::AMeleeWeapon()
 void AMeleeWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	hitBox->OnComponentBeginOverlap.AddDynamic(this, &AMeleeWeapon::OnBeginOverlap);
+	hitBox->OnComponentHit.AddDynamic(this, &AMeleeWeapon::OnHit);
 	maxCombo = comboSectionName.Num();
 }
 
@@ -35,10 +38,26 @@ void AMeleeWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	if (OtherActor && canHit &&
 		!OtherActor->GetClass()->IsChildOf(APlayerCharacter::StaticClass()))
 	{
+		FHitResult hitResult(ForceInit);
+
 		UE_LOG(LogTemp, Warning, TEXT("overlap actor"));
+		if (OtherActor->GetClass()->IsChildOf(ADestructibleObject::StaticClass()))
+		{
+			ADestructibleObject* desObj = Cast<ADestructibleObject>(OtherActor);
+			FPointDamageEvent damageEvent;
+			damageEvent.HitInfo = hitResult;
+			desObj->TakeDamage(damage, damageEvent,
+				GetOwner()->GetInstigatorController(), this);
+		}
 		// 공격을 한번 입이면 그 다음 공격은 안먹히도록 설정
 		canHit = false;
 	}
+}
+
+void AMeleeWeapon::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	UE_LOG(LogTemp, Warning, TEXT("hit actor"));
+
 }
 
 
