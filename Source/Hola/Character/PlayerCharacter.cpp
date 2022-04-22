@@ -189,7 +189,6 @@ void APlayerCharacter::DetectObject()
 	{
 		if (GetDistanceTo(CurrentActor) < GetDistanceTo(Closest))
 		{
-			widget->SetVisibility(false);
 			Closest = CurrentActor;
 		}
 	}
@@ -203,7 +202,9 @@ void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp
 	if (OtherActor && !OtherActor->GetClass()->IsChildOf(this->StaticClass()))
 	{
 		DetectObject();
-		widget->SetVisibility(true);
+		if(OtherActor->GetClass()->IsChildOf(AInteractObject::StaticClass()))
+			widget->SetVisibility(true);
+
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Hi"));
 	}
 }
@@ -215,7 +216,8 @@ void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, 
 	{
 		focusedActor = nullptr;
 		DetectObject();
-		widget->SetVisibility(false);
+		if (OtherActor->GetClass()->IsChildOf(AInteractObject::StaticClass()))
+			widget->SetVisibility(false);
 	}
 }
 
