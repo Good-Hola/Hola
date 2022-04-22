@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "../Object/InteractObject.h"
@@ -61,6 +62,10 @@ APlayerCharacter::APlayerCharacter()
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 
+	widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	check(widget);
+	widget->SetupAttachment(FollowCamera);
+
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -95,6 +100,8 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	health = max_hp;
 	energy = max_energy;
+
+	widget->SetVisibility(false);
 }
 
 void APlayerCharacter::PostInitializeComponents()
@@ -182,6 +189,7 @@ void APlayerCharacter::DetectObject()
 	{
 		if (GetDistanceTo(CurrentActor) < GetDistanceTo(Closest))
 		{
+			widget->SetVisibility(false);
 			Closest = CurrentActor;
 		}
 	}
@@ -195,6 +203,8 @@ void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp
 	if (OtherActor && !OtherActor->GetClass()->IsChildOf(this->StaticClass()))
 	{
 		DetectObject();
+		widget->SetVisibility(true);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Hi"));
 	}
 }
 
@@ -205,6 +215,7 @@ void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, 
 	{
 		focusedActor = nullptr;
 		DetectObject();
+		widget->SetVisibility(false);
 	}
 }
 

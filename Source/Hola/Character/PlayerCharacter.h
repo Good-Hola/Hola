@@ -39,6 +39,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "TriggerCapsule")
 		class UCapsuleComponent* TriggerCapsule;
+	UPROPERTY(EditInstanceOnly)
+		class UWidgetComponent* widget;
 
 	class AInteractObject* focusedActor;
 
