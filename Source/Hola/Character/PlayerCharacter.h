@@ -28,6 +28,8 @@ private:
 
 	UPROPERTY(BlueprintGetter = GetEnergy, BlueprintSetter = SetEnergy, Category = Stat)
 		float energy;
+	UPROPERTY(BlueprintGetter = GetOtherActor, BlueprintSetter = SetOtherActor, Category = Stat)
+		AActor* TakeOtherActor;
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -143,6 +145,9 @@ public:
 	UFUNCTION(BlueprintGetter, Category = Stat)
 		float GetMaxEnergy();
 
+	UFUNCTION(BlueprintGetter, Category = Stat)
+		AActor* GetOtherActor();
+
 	UFUNCTION(BlueprintSetter, Category = Stat)
 		void SetHealth(float hp);
 
@@ -156,6 +161,9 @@ public:
 
 	UFUNCTION(BlueprintSetter, Category = Stat)
 		void SetCurrentWeapon(EWeaponType type);
+
+	UFUNCTION(BlueprintSetter, Category = Stat)
+		void SetOtherActor(AActor* actor);
 
 	UFUNCTION(BlueprintGetter, Category = Instance)
 		class UPlayerAnimInstance* GetPlayerAnimInstance();

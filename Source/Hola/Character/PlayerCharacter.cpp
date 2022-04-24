@@ -204,6 +204,7 @@ void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp
 		DetectObject();
 		if(OtherActor->GetClass()->IsChildOf(AInteractObject::StaticClass()))
 			widget->SetVisibility(true);
+		TakeOtherActor = OtherActor;
 
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Hi"));
 	}
@@ -295,10 +296,19 @@ float APlayerCharacter::GetMaxEnergy()
 {
 	return max_energy;
 }
+AActor* APlayerCharacter::GetOtherActor()
+{
+	return TakeOtherActor;
+}
 
 void APlayerCharacter::SetHealth(float hp)
 {
 	health = hp;
+}
+
+void APlayerCharacter::SetOtherActor(AActor* actor)
+{
+	TakeOtherActor = actor;
 }
 
 void APlayerCharacter::Death_Implementation()
