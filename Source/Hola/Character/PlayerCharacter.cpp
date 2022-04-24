@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "../Object/InteractObject.h"
@@ -61,6 +62,10 @@ APlayerCharacter::APlayerCharacter()
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerBeginOverlap);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnTriggerEndOverlap);
 
+	widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	check(widget);
+	widget->SetupAttachment(FollowCamera);
+
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -95,6 +100,8 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	health = max_hp;
 	energy = max_energy;
+
+	widget->SetVisibility(false);
 }
 
 void APlayerCharacter::PostInitializeComponents()
@@ -195,6 +202,11 @@ void APlayerCharacter::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp
 	if (OtherActor && !OtherActor->GetClass()->IsChildOf(this->StaticClass()))
 	{
 		DetectObject();
+		if(OtherActor->GetClass()->IsChildOf(AInteractObject::StaticClass()))
+			widget->SetVisibility(true);
+		TakeOtherActor = OtherActor;
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Hi"));
 	}
 }
 
@@ -205,6 +217,8 @@ void APlayerCharacter::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, 
 	{
 		focusedActor = nullptr;
 		DetectObject();
+		if (OtherActor->GetClass()->IsChildOf(AInteractObject::StaticClass()))
+			widget->SetVisibility(false);
 	}
 }
 
@@ -282,10 +296,19 @@ float APlayerCharacter::GetMaxEnergy()
 {
 	return max_energy;
 }
+AActor* APlayerCharacter::GetOtherActor()
+{
+	return TakeOtherActor;
+}
 
 void APlayerCharacter::SetHealth(float hp)
 {
 	health = hp;
+}
+
+void APlayerCharacter::SetOtherActor(AActor* actor)
+{
+	TakeOtherActor = actor;
 }
 
 void APlayerCharacter::Death_Implementation()
