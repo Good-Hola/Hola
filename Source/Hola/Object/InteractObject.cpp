@@ -55,17 +55,14 @@ void AInteractObject::TurnOn_Implementation(APlayerCharacter* character)
 	if (character->GetEnergy() >= needEnergy)
 	{
 		isAct = !isAct;
-		UE_LOG(LogTemp, Log, TEXT("Enough Energy"));
+		character->SetEnergy(character->GetEnergy() - needEnergy);
 	}
-	else
-		UE_LOG(LogTemp, Log, TEXT("Not Enough Energy"));
-	UE_LOG(LogTemp, Log, TEXT("Turn On"));
 }
 
 void AInteractObject::TurnOff_Implementation(APlayerCharacter* character)
 {
 	isAct = !isAct;
-	UE_LOG(LogTemp, Log, TEXT("Turn Off"));
+	character->SetEnergy(character->GetEnergy() + needEnergy);
 }
 
 UStaticMeshComponent* AInteractObject::GetMesh()

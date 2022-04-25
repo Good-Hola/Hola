@@ -98,8 +98,10 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	health = max_hp;
-	energy = max_energy;
+	if (health == -1)
+		health = max_hp;
+	if (energy == -1)
+		energy = max_energy;
 
 	widget->SetVisibility(false);
 }
@@ -304,6 +306,8 @@ AActor* APlayerCharacter::GetOtherActor()
 void APlayerCharacter::SetHealth(float hp)
 {
 	health = hp;
+	if (health > max_hp)
+		health = max_hp;
 }
 
 void APlayerCharacter::SetOtherActor(AActor* actor)
@@ -338,6 +342,8 @@ float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent
 void APlayerCharacter::SetEnergy(float en)
 {
 	energy = en;
+	if (energy > max_energy)
+		energy = max_energy;
 }
 
 EWeaponType APlayerCharacter::GetCurrentWeapon()
