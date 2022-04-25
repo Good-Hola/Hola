@@ -48,6 +48,16 @@ void AInteractObject::Interact(APlayerCharacter* character)
 		TurnOff(character);
 }
 
+bool AInteractObject::GetIsAct()
+{
+	return isAct;
+}
+
+void AInteractObject::SetIsAct(bool status)
+{
+	isAct = status;
+}
+
 void AInteractObject::TurnOn_Implementation(APlayerCharacter* character)
 {
 	if (character->GetEnergy() >= needEnergy)

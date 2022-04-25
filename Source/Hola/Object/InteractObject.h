@@ -23,7 +23,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, Category = "flag")
+	UPROPERTY(BlueprintGetter = GetIsAct, BlueprintSetter = SetIsAct, Category = "flag")
 		bool isAct;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Scene)
@@ -53,6 +53,12 @@ public:
 		int GetNeedEnergy();
 
 	void Interact(class APlayerCharacter* character);
+
+	UFUNCTION(BlueprintGetter, Category = "Act")
+		bool GetIsAct();
+
+	UFUNCTION(BlueprintSetter, Category = "Act")
+		void SetIsAct(bool status);
 
 	UFUNCTION(BlueprintNativeEvent)
 		void TurnOn(class APlayerCharacter* character);
