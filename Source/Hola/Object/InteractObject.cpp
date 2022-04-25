@@ -4,6 +4,9 @@
 #include "InteractObject.h"
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "../Character/PlayerCharacter.h"
 
 // Sets default values
@@ -20,11 +23,6 @@ AInteractObject::AInteractObject()
 	mesh->SetCollisionObjectType(ECC_GameTraceChannel1);
 	mesh->SetCollisionProfileName(TEXT("HolaObject"));
 
-	/*
-	widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
-	check(widget);
-	widget->SetupAttachment(RootComponent);
-	*/
 }
 
 // Called when the game starts or when spawned
@@ -56,6 +54,8 @@ void AInteractObject::TurnOn_Implementation(APlayerCharacter* character)
 	{
 		isAct = !isAct;
 		character->SetEnergy(character->GetEnergy() - needEnergy);
+		if (turnOnSound)
+			UGameplayStatics::PlaySoundAtLocation(this, turnOnSound, GetActorLocation());
 	}
 }
 
@@ -63,6 +63,8 @@ void AInteractObject::TurnOff_Implementation(APlayerCharacter* character)
 {
 	isAct = !isAct;
 	character->SetEnergy(character->GetEnergy() + needEnergy);
+	if (turnOffSound)
+		UGameplayStatics::PlaySoundAtLocation(this, turnOffSound, GetActorLocation());
 }
 
 UStaticMeshComponent* AInteractObject::GetMesh()

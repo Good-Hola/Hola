@@ -30,7 +30,10 @@ protected:
 		class USceneComponent* scene;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
-		class USoundBase* interactionSound;
+		class USoundCue* turnOnSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+		class USoundCue* turnOffSound;
 
 protected:
 
