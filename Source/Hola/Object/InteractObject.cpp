@@ -67,6 +67,11 @@ void AInteractObject::TurnOff_Implementation(APlayerCharacter* character)
 		UGameplayStatics::PlaySoundAtLocation(this, turnOffSound, GetActorLocation());
 }
 
+FString AInteractObject::GetObjectDescription()
+{
+	return ObjectDescription;
+}
+
 UStaticMeshComponent* AInteractObject::GetMesh()
 {
 	return mesh;

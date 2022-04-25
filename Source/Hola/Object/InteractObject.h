@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
 		class USoundCue* turnOffSound;
 
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetObjectDescription, BlueprintReadWrite, Category = Description)
+		FString ObjectDescription;
+
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -58,6 +61,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		void TurnOff(class APlayerCharacter* character);
 	virtual void TurnOff_Implementation(class APlayerCharacter* character);
+
+	UFUNCTION(BlueprintGetter, Category = Description)
+		FString GetObjectDescription();
 
 	UFUNCTION()
 	class UStaticMeshComponent* GetMesh();
