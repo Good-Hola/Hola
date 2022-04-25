@@ -40,7 +40,7 @@ protected:
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Mesh)
 		class UStaticMeshComponent* mesh;
 
 	/*

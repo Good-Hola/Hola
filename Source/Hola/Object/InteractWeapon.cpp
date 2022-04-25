@@ -10,6 +10,13 @@ AInteractWeapon::AInteractWeapon()
 	mesh->SetCollisionObjectType(ECC_GameTraceChannel5);
 	mesh->SetCollisionProfileName(TEXT("HolaWeapon"));
 	mesh->SetSimulatePhysics(true);
+
+	SKMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SKMesh"));
+	check(SKMesh);
+	SKMesh->SetupAttachment(RootComponent);
+	SKMesh->SetCollisionObjectType(ECC_GameTraceChannel5);
+	SKMesh->SetCollisionProfileName(TEXT("HolaWeapon"));
+	SKMesh->SetSimulatePhysics(true);
 }
 
 void AInteractWeapon::TurnOn_Implementation(APlayerCharacter* character)

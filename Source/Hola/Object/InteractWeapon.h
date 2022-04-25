@@ -14,6 +14,9 @@ class HOLA_API AInteractWeapon : public AInteractObject
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditDefaultsOnly, Category = weapon)
+		USkeletalMeshComponent* SKMesh;
+
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 		TSubclassOf<class AWeapon> weapon;
 
