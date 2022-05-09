@@ -72,3 +72,8 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AProjectile::FireInDirection(const FVector& direction)
+{
+	projMovement->Velocity = direction * projMovement->InitialSpeed;
+}

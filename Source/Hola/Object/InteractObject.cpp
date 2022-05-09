@@ -39,14 +39,6 @@ int AInteractObject::GetNeedEnergy()
 }
 
 
-void AInteractObject::Interact(APlayerCharacter* character)
-{
-	UE_LOG(LogTemp, Log, TEXT("is act : %d"), isAct);
-	if (!isAct)
-		TurnOn(character);
-	else
-		TurnOff(character);
-}
 
 bool AInteractObject::GetIsAct()
 {
@@ -56,6 +48,14 @@ bool AInteractObject::GetIsAct()
 void AInteractObject::SetIsAct(bool status)
 {
 	isAct = status;
+}
+
+void AInteractObject::Interact(APlayerCharacter* character)
+{
+	if (!isAct)
+		TurnOn(character);
+	else
+		TurnOff(character);
 }
 
 void AInteractObject::TurnOn_Implementation(APlayerCharacter* character)

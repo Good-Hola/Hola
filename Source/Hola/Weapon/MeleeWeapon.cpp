@@ -43,6 +43,8 @@ void AMeleeWeapon::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		if (OtherActor->GetClass()->IsChildOf(ADestructibleObject::StaticClass()))
 		{
 			ADestructibleObject* desObj = Cast<ADestructibleObject>(OtherActor);
+			if (!desObj)
+				return;
 			FPointDamageEvent damageEvent;
 			damageEvent.HitInfo = hitResult;
 			desObj->TakeDamage(damage, damageEvent,
