@@ -68,9 +68,10 @@ void AWeapon::SpawnInteractWeapon(APlayerCharacter* character)
 {
 	if (character && weapon && GetWorld())
 	{
+		FVector spawnLocation = character->GetActorLocation();
+		spawnLocation.Z = spawnLocation.Z - 60;
 		AInteractWeapon* newWeapon = GetWorld()->SpawnActor<AInteractWeapon>(spawnWeapon,
-			character->GetActorLocation(), character->GetActorRotation());
-		newWeapon->GetMesh()->AddForce(character->GetActorRotation().Vector() * 300000);
+			spawnLocation, character->GetActorRotation());
 		Destroy();
 	}
 }

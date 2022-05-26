@@ -8,20 +8,31 @@
 
 /**
  *
+ * 
  */
 UCLASS()
 class HOLA_API AInteractWeapon : public AInteractObject
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, Category = weapon)
-		USkeletalMeshComponent* SKMesh;
-
 	UPROPERTY(EditDefaultsOnly, Category = Weapon)
 		TSubclassOf<class AWeapon> weapon;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+		class UParticleSystemComponent* Particle;
+
+protected:
+
+	UPROPERTY(EditAnywhere, Category = Weapon, meta = (ClampMin = "0", ClampMax = "2", UIMin = "0", UIMax = "2"))
+		int rotateDir;
+
+	UPROPERTY(EditAnywhere, Category = Weapon)
+		int rotateSpeed;
+
 public:
 	AInteractWeapon();
+
+	void Tick(float DeltaSeconds);
 
 	virtual void TurnOn_Implementation(class APlayerCharacter* character);
 
