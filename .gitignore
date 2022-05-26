@@ -14,6 +14,7 @@ Saved
 *.xcworkspace
 Content/OutsideAsset/
 Content/OutsideAsset_2/
+Content/StarterContent/
 *.7z
 *.zip
-*.log
+CookerOpenOrder.log
