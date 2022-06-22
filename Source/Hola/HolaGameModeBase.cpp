@@ -3,26 +3,17 @@
 
 #include "HolaGameModeBase.h"
 #include "Blueprint/UserWidget.h"
+#include "PC_HolaMainMenu.h"
+#include "Character/HolaPlayerController.h"
+#include "HolaHUDBase.h"
+
+AHolaGameModeBase::AHolaGameModeBase()
+{
+	PlayerControllerClass = AHolaPlayerController::StaticClass();
+	HUDClass = AHolaHUDBase::StaticClass();
+}
 
 void AHolaGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	ChangeMenuWidget(StartingWidgetClass);
-}
-
-void AHolaGameModeBase::ChangeMenuWidget(TSubclassOf<class UUserWidget> NewWidgetClass)
-{
-	if (CurrentWidget != nullptr)
-	{
-		CurrentWidget->RemoveFromViewport();
-		CurrentWidget = nullptr;
-	}
-	if (NewWidgetClass != nullptr)
-	{
-		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), NewWidgetClass);
-		if (CurrentWidget != nullptr)
-		{
-			CurrentWidget->AddToViewport();
-		}
-	}
 }

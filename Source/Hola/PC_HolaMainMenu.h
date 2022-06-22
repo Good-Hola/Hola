@@ -23,6 +23,8 @@ protected:
 
 	void EscapeKey();
 
+	void TestKey();
+
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
 		TSubclassOf<class UUMG_MainMenuBase> MainMenuUI;
