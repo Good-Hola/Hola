@@ -51,7 +51,7 @@ protected:
 protected:
 	virtual void NativeConstruct() override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void OnClickedNewGame();
 
 	UFUNCTION()

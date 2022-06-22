@@ -8,6 +8,8 @@
 #include "Components/Border.h"
 #include "Components/CanvasPanel.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "../PC_HolaMainMenu.h"
 
 void UUMG_MainMenuBase::NativeConstruct()
 {
@@ -20,14 +22,17 @@ void UUMG_MainMenuBase::NativeConstruct()
 	Btn_ExitAgree->OnClicked.AddDynamic(this, &UUMG_MainMenuBase::OnClickedExitAgree);
 	Btn_ExitDeny->OnClicked.AddDynamic(this, &UUMG_MainMenuBase::OnClickedExitDeny);
 
+	Btn_NewGame->bIsVariable = true;
+
 	ExitQuesBox->SetVisibility(ESlateVisibility::Collapsed);
+
+	ShowUpAnim();
 }
 
 void UUMG_MainMenuBase::ShowUpAnim()
 {
 	PlayAnimation(ShowUp);
 	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, TEXT("cjeclk"));
-
 }
 
 bool UUMG_MainMenuBase::GetIsExitMenuOn()
@@ -50,7 +55,11 @@ void UUMG_MainMenuBase::HideExitMenu()
 void UUMG_MainMenuBase::OnClickedNewGame()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, TEXT("New Game"));
-
+	
+	APC_HolaMainMenu* controller = Cast<APC_HolaMainMenu>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	controller->SetInputMode(FInputModeGameOnly());
+	controller->SetShowMouseCursor(false);
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level_Stage1"));
 }
 
 void UUMG_MainMenuBase::OnClickedLoadGame()
