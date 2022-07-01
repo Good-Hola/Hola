@@ -16,11 +16,11 @@
 > ~~(개발 단계에서 사용한 레포지토리에 문제가 생겨 어쩔 수 없이 삭제 후 새로 만들게 됨)~~
 
 ### 프로그램 개발 규칙
-<img src="https://user-images.githubusercontent.com/54701846/176833588-c8e4d18c-964a-4e87-a682-12f9e74c9096.png" align="center" />
+<img src="https://user-images.githubusercontent.com/54701846/176833588-c8e4d18c-964a-4e87-a682-12f9e74c9096.png" align="center" width="450" height="450" />
 
-<img src="https://user-images.githubusercontent.com/54701846/176833619-2d1cf755-ac79-44f3-b592-8e79609683a6.png" align="center" />
+<img src="https://user-images.githubusercontent.com/54701846/176833619-2d1cf755-ac79-44f3-b592-8e79609683a6.png" align="center" width="450" height="300" />
 
-<img src="https://user-images.githubusercontent.com/54701846/176833655-d4e03fc7-6efc-41d7-8494-6aeeaa384e0e.png" align="center" />
+<img src="https://user-images.githubusercontent.com/54701846/176833655-d4e03fc7-6efc-41d7-8494-6aeeaa384e0e.png" align="center" width="450" height="300" />
 
 
 # 게임 소개
