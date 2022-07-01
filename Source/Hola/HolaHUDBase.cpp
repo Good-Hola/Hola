@@ -8,6 +8,16 @@ AHolaHUDBase::AHolaHUDBase()
 {
 }
 
+void AHolaHUDBase::DisplayMainMenuWidget()
+{
+	ChangeMenuWidget(MainMenuWidget);
+}
+
+void AHolaHUDBase::DisplayUserInterfaceWidget()
+{
+	ChangeMenuWidget(UserInterfaceWidget);
+}
+
 void AHolaHUDBase::BeginPlay()
 {
 	Super::BeginPlay();

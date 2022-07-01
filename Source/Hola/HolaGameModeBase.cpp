@@ -10,7 +10,6 @@
 AHolaGameModeBase::AHolaGameModeBase()
 {
 	PlayerControllerClass = AHolaPlayerController::StaticClass();
-	HUDClass = AHolaHUDBase::StaticClass();
 }
 
 void AHolaGameModeBase::BeginPlay()

@@ -20,8 +20,20 @@ protected:
 	UPROPERTY()
 		class UUserWidget* CurrentWidget;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UMG Game")
+		TSubclassOf<UUserWidget> UserInterfaceWidget;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UMG Game")
+		TSubclassOf<UUserWidget> MainMenuWidget;
+
 public:
 	AHolaHUDBase();
+
+	UFUNCTION()
+		void DisplayMainMenuWidget();
+
+	UFUNCTION()
+		void DisplayUserInterfaceWidget();
 
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 		void ChangeMenuWidget(TSubclassOf<class UUserWidget> NewWidgetClass);
