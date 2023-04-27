@@ -5,6 +5,8 @@
 - 챌린지 시즌3 주제는 **챌린지**로 언리얼 엔진을 다뤄보지 않은 5명(프로그래머4, 기획1)이 두 달간 학습과 게임 제작을 동시에 진행  
 <img src="https://user-images.githubusercontent.com/54701846/176667215-961a9f96-0760-483a-a968-cecfce58fac9.png" width="450px" height="400px"/>  
 
+## 프로젝트 시연 영상
+[![Video Label](http://img.youtube.com/vi/FKvPCVWzjUg/0.jpg)](https://youtu.be/'FKvPCVWzjUg')
 ## 개발 엔진 및 개발 환경
 ### 게임 엔진 및 언어
 > C++  
