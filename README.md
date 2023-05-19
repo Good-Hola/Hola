@@ -26,22 +26,8 @@
 
 
 # 게임 소개
-<div align="center">
+<img src="https://github.com/Good-Hola/Hola/assets/54701846/05d7b102-0c46-4953-9e5d-7099bacb0f96" align="center" />  
 
-|||  
-|-----|-------------|
-|**게임명**|The Last Hope|
-|**테마**|포스트 아포칼립스|
-|**장르**|3D 퍼즐 어드벤처|
-|**플랫폼**|PC|
-|**타겟 유저**|퍼즐 어드벤처 게임을 즐기는 유저|
-
-</div>
-
------------------------------
-
-## 게임 배경
-<img src="https://user-images.githubusercontent.com/54701846/176821534-993f5f41-0e04-41ed-b639-df198257e7e0.png" width="500" height="450" align="center" />
 
 -----------------------------
 ## 조작 방식
